@@ -1,3 +1,4 @@
+// screens/home_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../config/app_assets.dart';
@@ -360,7 +361,7 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
                         characterImagePath: AppAssets.burpeeCharAsset,
                         backgroundImagePath: AppAssets.burpeeBgAsset,
                         backgroundColor: Colors.orange.shade300,
-                        characterImageHeight: 95,
+                        characterImageHeight: 85,
                         workoutIdentifier: "boom_burpee_burn",
                       ),
                       WorkoutCard(
@@ -370,7 +371,7 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
                         characterImagePath: AppAssets.slimBellyCharAsset,
                         backgroundImagePath: AppAssets.slimBellyBgAsset,
                         backgroundColor: Colors.lightBlue.shade200,
-                        characterImageHeight: 105,
+                        characterImageHeight: 95,
                         workoutIdentifier: "slim_belly_yoga",
                       ),
                       WorkoutCard(
@@ -380,7 +381,7 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
                         characterImagePath: AppAssets.danceFitCharAsset,
                         backgroundImagePath: AppAssets.danceFitBgAsset,
                         backgroundColor: Colors.yellow.shade600,
-                        characterImageHeight: 95,
+                        characterImageHeight: 85,
                         workoutIdentifier: "groovy_dance_fit",
                       ),
                       WorkoutCard(
@@ -390,7 +391,7 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
                         characterImagePath: AppAssets.plankCharAsset,
                         backgroundImagePath: AppAssets.plankBgAsset,
                         backgroundColor: Colors.deepOrange.shade400,
-                        characterImageHeight: 93,
+                        characterImageHeight: 83,
                         workoutIdentifier: "plank_challenge",
                       ),
                     ],
