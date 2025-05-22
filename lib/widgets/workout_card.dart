@@ -1,3 +1,4 @@
+// widgets/workout_card.dart
 import 'package:flutter/material.dart';
 import 'package:video/exercise_video.dart';
 
@@ -33,7 +34,7 @@ class WorkoutCard extends StatelessWidget {
       child: const Text(
         'kcal',
         style: TextStyle(
-          fontSize: 12,
+          fontSize: 8,
           fontWeight: FontWeight.bold,
           color: Colors.black54,
         ),
@@ -116,7 +117,7 @@ class WorkoutCard extends StatelessWidget {
                   Text(
                     title,
                     style: const TextStyle(
-                      fontSize: 23,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
                       height: 1.2,
