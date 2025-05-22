@@ -4,7 +4,7 @@ import 'dart:async';
 import 'progress_painter.dart';
 
 import 'package:video/videoplayerwidget.dart';
-import 'fitness_timer_page_2.dart'; // 导入第二个练习页面，用于导航
+import 'fitness_timer_page_2.dart'; 
 
 class FitnessTimerPage1 extends StatefulWidget {
   @override
@@ -97,7 +97,7 @@ class _FitnessTimerPage1State extends State<FitnessTimerPage1> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 28.0), // 向右移动 20px，可调
+              padding: const EdgeInsets.only(left: 28.0), 
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
