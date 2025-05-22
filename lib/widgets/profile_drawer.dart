@@ -1,3 +1,4 @@
+// widgets/profile_drawer.dart
 import 'package:flutter/material.dart';
 import '../config/app_assets.dart';
 
@@ -114,7 +115,7 @@ class ProfileDrawer extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          const SizedBox(height: 180),
+          const SizedBox(height: 90),
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 16.0,
