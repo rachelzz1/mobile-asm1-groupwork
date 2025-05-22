@@ -1,11 +1,13 @@
 // fitness_timer_page_1.dart
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'progress_painter.dart';
 
 import 'package:video/videoplayerwidget.dart';
-import 'fitness_timer_page_2.dart'; 
+import 'fitness_timer_page_2.dart';
 
+//test-yyf
 class FitnessTimerPage1 extends StatefulWidget {
   @override
   _FitnessTimerPage1State createState() => _FitnessTimerPage1State();
@@ -97,7 +99,7 @@ class _FitnessTimerPage1State extends State<FitnessTimerPage1> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 28.0), 
+              padding: const EdgeInsets.only(left: 28.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
