@@ -1,8 +1,6 @@
 // lib/widgets/pk_result_panel.dart
 import 'package:flutter/material.dart';
 
-
-//test-rqz
 class PKResultPanel extends StatelessWidget {
   final String winnerText;
   final String winnerAvatarPath;
@@ -24,9 +22,16 @@ class PKResultPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final panelWidth = maxWidth * 0.85;
-    final panelAvatarSize = panelWidth * 0.4;
+    final panelAvatarSize = panelWidth * 0.4; // 这是直径
     final buttonFontSize = panelWidth * 0.05;
     final titleFontSize = panelWidth * 0.09;
+
+    final baseCrownDimension = panelAvatarSize * 0.5;
+    final crownWidth = baseCrownDimension * 1.4;
+    final crownHeight = baseCrownDimension * 0.8;
+
+    bool isTie = winnerText == "It's a Tie!";
+    bool showAvatarAndCrown = winnerAvatarPath.isNotEmpty && !isTie;
 
     return Center(
       child: Material(
@@ -54,35 +59,39 @@ class PKResultPanel extends StatelessWidget {
                   icon: const Icon(
                     Icons.close,
                     color: Colors.black,
-                  ), // Changed close icon color to black
+                  ),
                   onPressed: onClose,
                 ),
               ),
               Stack(
                 alignment: Alignment.topCenter,
                 children: [
-                  if (winnerAvatarPath.isNotEmpty)
-                    CircleAvatar(
-                      radius: panelAvatarSize / 2,
-                      backgroundColor: Colors.grey[200],
-                      backgroundImage: AssetImage(winnerAvatarPath),
+                  if (showAvatarAndCrown)
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          'assets/images/crown.png',
+                          width: crownWidth,
+                          height: crownHeight,
+                          fit: BoxFit.fill,
+                        ),
+                        CircleAvatar(
+                          radius: panelAvatarSize / 2,
+                          backgroundColor: Colors.grey[200],
+                          backgroundImage: AssetImage(winnerAvatarPath),
+                        ),
+                      ],
                     ),
-                  if (winnerAvatarPath.isEmpty && winnerText == "It's a Tie!")
-                    Icon(
-                      Icons.sentiment_neutral,
-                      size: panelAvatarSize,
-                      color: Colors.grey,
+                  if (isTie)
+                    Padding(
+                      padding: EdgeInsets.only(top: crownHeight + 0.0),
+                      child: Icon(
+                        Icons.sentiment_neutral,
+                        size: panelAvatarSize,
+                        color: Colors.grey,
+                      ),
                     ),
-                  Positioned(
-                    top:
-                        -panelAvatarSize *
-                        0.2, // Corrected typo: changed panelAvatarAvatarSize to panelAvatarSize
-                    child: Image.asset(
-                      'assets/images/crown.png', // Ensure this is your crown PNG image's correct path
-                      width: panelAvatarSize * 0.5, // Crown size
-                      height: panelAvatarSize * 0.5, // Crown size
-                    ),
-                  ),
                 ],
               ),
               const SizedBox(height: 16),
@@ -103,7 +112,7 @@ class PKResultPanel extends StatelessWidget {
                     child: ElevatedButton.icon(
                       onPressed: onRematch,
                       icon: const Icon(Icons.whatshot, color: Colors.white),
-                      label: Text(
+                      label: Text( // "Rematch" 通常较短，可能不需要 FittedBox
                         "Rematch",
                         style: TextStyle(
                           fontSize: buttonFontSize,
@@ -111,9 +120,7 @@ class PKResultPanel extends StatelessWidget {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(
-                          0xFFEB7402,
-                        ), // Changed Rematch button color
+                        backgroundColor: const Color(0xFFEB7402),
                         foregroundColor: Colors.white,
                         padding: EdgeInsets.symmetric(
                           horizontal: panelWidth * 0.05,
@@ -132,19 +139,21 @@ class PKResultPanel extends StatelessWidget {
                       icon: const Icon(
                         Icons.bar_chart,
                         color: Color(0xFF000000),
-                      ), // Changed View Stats icon color
-                      label: Text(
-                        "View Stats",
-                        style: TextStyle(
-                          fontSize: buttonFontSize,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFF000000),
-                        ), // Changed View Stats text color
+                      ),
+                      // 使用 FittedBox 包裹 "View Stats" 的 Text Widget
+                      label: FittedBox(
+                        fit: BoxFit.scaleDown, // 如果文本太长，则缩小文本以适应单行
+                        child: Text(
+                          "View Stats",
+                          style: TextStyle(
+                            fontSize: buttonFontSize, // 这是期望的字体大小
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFF000000),
+                          ),
+                        ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(
-                          0xFFD7E3FE,
-                        ), // Changed View Stats button color
+                        backgroundColor: const Color(0xFFD7E3FE),
                         foregroundColor: Colors.black,
                         padding: EdgeInsets.symmetric(
                           horizontal: panelWidth * 0.05,
@@ -152,9 +161,7 @@ class PKResultPanel extends StatelessWidget {
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
-                          side:
-                              BorderSide
-                                  .none, // Removed outline from View Stats button
+                          side: BorderSide.none,
                         ),
                       ),
                     ),

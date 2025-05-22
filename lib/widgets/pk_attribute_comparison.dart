@@ -45,13 +45,13 @@ class _PKAttributeComparisonContainerState
     AttributeData(
       iconPath: 'assets/icons/Flexibility.svg',
       name: "Flexibility",
-      leftValue: 2,
+      leftValue: 55,
       rightValue: 45,
     ),
     AttributeData(
       iconPath: '',
       name: "Total",
-      leftValue: 25 + 22 + 40 + 2,
+      leftValue: 25 + 22 + 40 + 55,
       rightValue: 20 + 23 + 35 + 45,
     ),
   ];

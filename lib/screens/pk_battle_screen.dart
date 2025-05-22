@@ -6,10 +6,9 @@ import '../widgets/pk_progress_bar.dart';
 import '../widgets/pk_attribute_comparison.dart';
 import '../widgets/pk_result_panel.dart';
 import 'home_page.dart';
-// No need to import attribute_data.dart here if it's only used by pk_attribute_comparison.dart
 
 class PKBattleScreen extends StatefulWidget {
-  const PKBattleScreen({super.key});
+  const PKBattleScreen({Key? key}) : super(key: key);
 
   @override
   State<PKBattleScreen> createState() => _PKBattleScreenState();
@@ -17,19 +16,13 @@ class PKBattleScreen extends StatefulWidget {
 
 class _PKBattleScreenState extends State<PKBattleScreen>
     with TickerProviderStateMixin {
+  static const Color themeOrange = Color(0xFFFFBA3A);
+
   int _currentIndex = 2;
-
   late AnimationController _panelAnimationController;
-  late Animation<double> _panelOpacityAnimation;
-  final ValueNotifier<bool> _allAttributeAnimationsDoneNotifier = ValueNotifier(
-    false,
-  );
-
-  // PKBattleScreen now owns and initializes _progressBarWidthFactor
-  final ValueNotifier<double> _progressBarWidthFactor = ValueNotifier<double>(
-    0.0,
-  );
-
+  final ValueNotifier<bool> _allAttributeAnimationsDoneNotifier =
+      ValueNotifier(false);
+  final ValueNotifier<double> _progressBarWidthFactor = ValueNotifier<double>(0.0);
   bool _showResultPanel = false;
   String _winnerText = "";
   String _winnerAvatarPath = "";
@@ -37,29 +30,24 @@ class _PKBattleScreenState extends State<PKBattleScreen>
   @override
   void initState() {
     super.initState();
-    _progressBarWidthFactor.value = 0.0; // Ensure it's reset on init
-
+    _progressBarWidthFactor.value = 0.0;
     _panelAnimationController = AnimationController(
       duration: const Duration(milliseconds: 400),
       vsync: this,
     );
-    _panelOpacityAnimation = CurvedAnimation(
-      parent: _panelAnimationController,
-      curve: Curves.easeInOut,
-    );
-
     _allAttributeAnimationsDoneNotifier.addListener(_handleAllAnimationsDone);
+    _showResultPanel = false;
+    _winnerText = "";
+    _winnerAvatarPath = "";
   }
 
   void _handleAllAnimationsDone() {
     if (_allAttributeAnimationsDoneNotifier.value) {
       final double progress = _progressBarWidthFactor.value;
       if (progress > 0.5001) {
-        // Add a small epsilon for floating point comparisons
         _winnerText = "You Win!";
         _winnerAvatarPath = 'assets/images/girl.png';
       } else if (progress < 0.4999) {
-        // Add a small epsilon
         _winnerText = "Kris Wins!";
         _winnerAvatarPath = 'assets/images/boy.png';
       } else {
@@ -67,7 +55,7 @@ class _PKBattleScreenState extends State<PKBattleScreen>
         _winnerAvatarPath = '';
       }
 
-      Future.delayed(const Duration(milliseconds: 100), () {
+      Future.delayed(const Duration(seconds: 1), () { // Delay here
         if (mounted) {
           setState(() {
             _showResultPanel = true;
@@ -91,8 +79,7 @@ class _PKBattleScreenState extends State<PKBattleScreen>
   }
 
   void _onRematch() {
-    _closeResultPanel(); // Close panel before navigating
-    // A short delay can prevent jank if panel closing animation is ongoing
+    _closeResultPanel();
     Future.delayed(
       Duration(
         milliseconds: _panelAnimationController.duration?.inMilliseconds ?? 200,
@@ -101,7 +88,7 @@ class _PKBattleScreenState extends State<PKBattleScreen>
         if (mounted) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const FitnessHomePage()),
+            MaterialPageRoute(builder: (context) => const PKBattleScreen()),
           );
         }
       },
@@ -110,18 +97,15 @@ class _PKBattleScreenState extends State<PKBattleScreen>
 
   void _onViewStats() {
     _closeResultPanel();
-    // Implement navigation or action for View Stats
     print("View Stats Tapped");
   }
 
   @override
   void dispose() {
-    _allAttributeAnimationsDoneNotifier.removeListener(
-      _handleAllAnimationsDone,
-    );
+    _allAttributeAnimationsDoneNotifier.removeListener(_handleAllAnimationsDone);
     _allAttributeAnimationsDoneNotifier.dispose();
     _panelAnimationController.dispose();
-    _progressBarWidthFactor.dispose(); // Dispose the notifier
+    _progressBarWidthFactor.dispose();
     super.dispose();
   }
 
@@ -133,40 +117,29 @@ class _PKBattleScreenState extends State<PKBattleScreen>
     double iconSize,
   ) {
     bool isActive = _currentIndex == index;
-    Color color = isActive ? const Color(0xFFFF7A00) : const Color(0xFFBDBDBD);
+    Color color = isActive ? themeOrange : const Color(0xFFBDBDBD);
 
     return Expanded(
       child: GestureDetector(
         onTap: () {
           if (mounted) {
-            if (index == 0) {
-              // Home
-              print('Try to jump to FitnessHomePage...');
+            if (_currentIndex == index && index == 2) {
+              if (_showResultPanel) {
+                _closeResultPanel();
+              }
+            } else if (index == 0) {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const FitnessHomePage(),
                 ),
-              ); // Example: refresh for demo
-              print('home');
+              );
+            } else {
+              setState(() {
+                _currentIndex = index;
+              });
+              if (index == 2 && _currentIndex != 2) {}
             }
-            // Add navigation logic for other tabs if needed
-            // else if (index == 1) { // Calendar }
-            // else if (index == 3) { // Profile }
-
-            // If PK tab (index 2) is tapped again while active, and panel is shown, maybe close panel or restart
-            if (index == 2 && _currentIndex == 2 && _showResultPanel) {
-              _closeResultPanel();
-            } else if (index == 2 &&
-                _currentIndex == 2 &&
-                !_allAttributeAnimationsDoneNotifier.value) {
-              // If PK tapped again and animations haven't finished, maybe allow restart?
-              // For now, just set state. If PKBattleScreen is current, tapping PK doesn't restart by default.
-            }
-
-            setState(() {
-              _currentIndex = index;
-            });
           }
         },
         behavior: HitTestBehavior.opaque,
@@ -195,6 +168,56 @@ class _PKBattleScreenState extends State<PKBattleScreen>
     );
   }
 
+  Widget _buildPlayerColumn(BuildContext context, String avatarPath,
+      String playerName, double avatarSize, double nameFontSize) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                offset: const Offset(4, 4),
+                blurRadius: 8,
+              ),
+            ],
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.white,
+                width: 3,
+              ),
+            ),
+            child: CircleAvatar(
+              radius: avatarSize / 2,
+              backgroundColor: Colors.white,
+              child: Padding(
+                padding: EdgeInsets.all(avatarSize * 0.08),
+                child: Image.asset(
+                  avatarPath,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          playerName,
+          style: TextStyle(
+            fontSize: nameFontSize,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
@@ -207,8 +230,7 @@ class _PKBattleScreenState extends State<PKBattleScreen>
           builder: (context, constraints) {
             final double maxWidth = constraints.maxWidth;
             final double maxHeight = constraints.maxHeight;
-
-            final double padding = maxWidth * 0.04;
+            final double pageHorizontalPadding = maxWidth * 0.04;
             final double avatarSize = maxWidth * 0.28;
             final double vsFontSize = maxWidth * 0.1;
             final double counterFontSize = maxWidth * 0.09;
@@ -218,129 +240,46 @@ class _PKBattleScreenState extends State<PKBattleScreen>
               children: [
                 SingleChildScrollView(
                   child: Padding(
-                    padding: EdgeInsets.all(padding),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: pageHorizontalPadding),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(height: maxHeight * 0.03),
+                        SizedBox(height: maxHeight * 0.05),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Avatars and VS
-                            Column(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
-                                        offset: const Offset(4, 4),
-                                        blurRadius: 8,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: Colors.white,
-                                        width: 4,
-                                      ),
-                                    ),
-                                    child: Container(
-                                      width: avatarSize,
-                                      height: avatarSize,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white,
-                                      ),
-                                      child: Center(
-                                        child: Image.asset(
-                                          'assets/images/girl.png',
-                                          width: avatarSize * 0.8,
-                                          height: avatarSize * 0.8,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                            _buildPlayerColumn(context, 'assets/images/girl.png',
+                                'You', avatarSize, counterFontSize),
+                            Padding(
+                              padding: EdgeInsets.only(top: avatarSize * 0.35),
+                              child: Text(
+                                'VS',
+                                style: TextStyle(
+                                  fontSize: vsFontSize,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey,
                                 ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  'You',
-                                  style: TextStyle(
-                                    fontSize: counterFontSize,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Text(
-                              'VS',
-                              style: TextStyle(
-                                fontSize: vsFontSize,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
                               ),
                             ),
-                            Column(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
-                                        offset: const Offset(4, 4),
-                                        blurRadius: 8,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Container(
-                                    width: avatarSize,
-                                    height: avatarSize,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white,
-                                    ),
-                                    child: Center(
-                                      child: Image.asset(
-                                        'assets/images/boy.png',
-                                        width: avatarSize * 0.8,
-                                        height: avatarSize * 0.8,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  'Kris',
-                                  style: TextStyle(
-                                    fontSize: counterFontSize,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
+                            _buildPlayerColumn(context, 'assets/images/boy.png',
+                                'Kris', avatarSize, counterFontSize),
                           ],
                         ),
-                        SizedBox(height: maxHeight * 0.03),
+                        SizedBox(height: maxHeight * 0.015),
                         PKProgressBar(
-                          // Use the new widget
                           maxWidth: maxWidth,
                           progressBarWidthFactor: _progressBarWidthFactor,
                         ),
                         SizedBox(height: attributeContainerMargin),
                         PKAttributeComparisonContainer(
-                          // Use the new widget
                           parentWidth: maxWidth,
                           onAllAnimationsComplete:
                               _allAttributeAnimationsDoneNotifier,
                           progressBarWidthFactor: _progressBarWidthFactor,
                         ),
-                        SizedBox(height: maxHeight * 0.15),
+                        SizedBox(height: maxHeight * 0.12),
                       ],
                     ),
                   ),
@@ -350,11 +289,9 @@ class _PKBattleScreenState extends State<PKBattleScreen>
                     child: Container(
                       color: Colors.black.withOpacity(0.4),
                       child: PKResultPanel(
-                        // Use the new widget
                         winnerText: _winnerText,
                         winnerAvatarPath: _winnerAvatarPath,
-                        maxWidth:
-                            maxWidth, // Pass constraints.maxWidth for panel's internal sizing
+                        maxWidth: maxWidth,
                         onClose: _closeResultPanel,
                         onRematch: _onRematch,
                         onViewStats: _onViewStats,
