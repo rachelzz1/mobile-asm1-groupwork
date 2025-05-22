@@ -3,6 +3,7 @@ import 'package:video/videoplayerwidget.dart';
 import 'package:video/fitness_timer_page_1.dart';
 import 'screens/home_page.dart';
 import 'package:get_storage/get_storage.dart';
+//这是一个test
 
 class ExerciseVideo extends StatefulWidget {
   //final String workoutId;
