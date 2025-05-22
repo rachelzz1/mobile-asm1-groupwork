@@ -12,7 +12,7 @@ class FitnessTimerPage1 extends StatefulWidget {
 }
 
 class _FitnessTimerPage1State extends State<FitnessTimerPage1> {
-  final String _exerciseName = 'Breathing Vitality Inner Core';
+  final String _exerciseName = 'Breathing Core';
   final String _imagePath = 'assets/images/exercise1.png';
   static const double _totalDuration = 3.0;
 
