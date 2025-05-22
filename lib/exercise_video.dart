@@ -3,7 +3,6 @@ import 'package:video/videoplayerwidget.dart';
 import 'package:video/fitness_timer_page_1.dart';
 import 'screens/home_page.dart';
 import 'package:get_storage/get_storage.dart';
-//test gmh
 
 class ExerciseVideo extends StatefulWidget {
   //final String workoutId;
@@ -30,7 +29,7 @@ class ExerciseVideoState extends State<ExerciseVideo> {
     if (!isGo) {
       setState(() {
         isGo = true;
-        box.write('isGo', true); // 保存状态
+        box.write('isGo', true); // save the exercise status
       });
     }
     Navigator.push(
@@ -47,19 +46,19 @@ class ExerciseVideoState extends State<ExerciseVideo> {
           color: Color(0xFFFFFFFF),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            //页面主体部分
+            //Main body part
             children: [
               Expanded(
                 child: Container(
                   color: Color(0xFFFFFFFF),
                   width: double.infinity,
                   height: double.infinity,
-                  //可滚动视图
+                  //Scrollable View
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        //返回按钮
+                        //Back button
                         InkWell(
                           onTap: () {
                             Navigator.push(
@@ -84,7 +83,7 @@ class ExerciseVideoState extends State<ExerciseVideo> {
                           ),
                         ),
 
-                        //视频封面（可点击）
+                        //exercise video cover page (clickable)
                         InkWell(
                           onTap: () {
                             Navigator.push(
@@ -97,14 +96,13 @@ class ExerciseVideoState extends State<ExerciseVideo> {
                               ),
                             );
                           },
-                          //橘黄色卡片区
+                          //orange card part
                           child: IntrinsicHeight(
                             child: Container(
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10), //圆角
+                                borderRadius: BorderRadius.circular(10),
                                 color: Color(0xFFFFBA39),
                               ),
-                              //上下内边距
                               padding: const EdgeInsets.symmetric(vertical: 13),
                               margin: const EdgeInsets.only(
                                 bottom: 16,
@@ -112,7 +110,7 @@ class ExerciseVideoState extends State<ExerciseVideo> {
                                 right: 24,
                               ),
                               width: double.infinity,
-                              //视频中间小人（视频预览图）
+                              //image of the video cover
                               child: Column(
                                 children: [
                                   Container(
@@ -130,7 +128,7 @@ class ExerciseVideoState extends State<ExerciseVideo> {
                         ),
                         IntrinsicWidth(
                           child: IntrinsicHeight(
-                            //评分与标题
+                            //title and information part
                             child: Container(
                               margin: const EdgeInsets.only(
                                 bottom: 17,
@@ -182,7 +180,7 @@ class ExerciseVideoState extends State<ExerciseVideo> {
                                       ),
                                     ),
                                   ),
-                                  //标题
+                                  //title
                                   Text(
                                     "Sour and Refreshing Slim Belly",
                                     style: TextStyle(
@@ -203,7 +201,7 @@ class ExerciseVideoState extends State<ExerciseVideo> {
                                 bottom: 2,
                                 left: 32,
                               ),
-                              //时间和卡路里
+                              //time and kal
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -238,7 +236,7 @@ class ExerciseVideoState extends State<ExerciseVideo> {
                                 bottom: 15,
                                 left: 33,
                               ),
-                              //底下小字
+                              //text at the bottom
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -264,7 +262,7 @@ class ExerciseVideoState extends State<ExerciseVideo> {
                             ),
                           ),
                         ),
-                        //介绍
+                        //introduction
                         Container(
                           margin: const EdgeInsets.only(
                             bottom: 20,
@@ -294,7 +292,7 @@ class ExerciseVideoState extends State<ExerciseVideo> {
                             ),
                           ),
                         ),
-                        //What you will do部分
+                        //What you will do part
                         Container(
                           margin: const EdgeInsets.only(bottom: 22, left: 24),
                           child: Text(
@@ -523,7 +521,7 @@ class ExerciseVideoState extends State<ExerciseVideo> {
                         ),
                       ),
 
-                      // 显示状态
+                      // Show the status button
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10.0),
@@ -538,20 +536,20 @@ class ExerciseVideoState extends State<ExerciseVideo> {
                                         102,
                                         212,
                                         106,
-                                      ) // ✅ 如果完成，显示绿色
+                                      ) // if done, shows green color
                                       : isGo
                                       ? Color.fromARGB(
                                         255,
                                         255,
                                         218,
                                         118,
-                                      ) // 进行中，黄色
-                                      : Color(0xFFEFEFEF), // 未进行，灰色
+                                      ) // if in progress, shows yellow color
+                                      : Color(0xFFEFEFEF), // undone, grey color
                             ),
                             child: Center(
                               child: Text(
                                 isDone
-                                    ? "Done" // ✅ 优先显示 Done
+                                    ? "Done"
                                     : isGo
                                     ? "Ongoing"
                                     : "Undone",
@@ -577,15 +575,13 @@ class ExerciseVideoState extends State<ExerciseVideo> {
   }
 }
 
+//Widget for the expandable text
 class ExpandableText extends StatefulWidget {
   final String text;
-  final TextStyle? style; // 新增 style 参数
+  final TextStyle? style;
 
-  const ExpandableText({
-    Key? key,
-    required this.text,
-    this.style, // 可选参数
-  }) : super(key: key);
+  const ExpandableText({Key? key, required this.text, this.style})
+    : super(key: key);
 
   @override
   _ExpandableTextState createState() => _ExpandableTextState();
@@ -623,6 +619,7 @@ class _ExpandableTextState extends State<ExpandableText> {
   }
 }
 
+//Widget for the exercise part card
 class ExercisePartCard extends StatelessWidget {
   final String imageUrl;
   final String title;
@@ -647,18 +644,18 @@ class ExercisePartCard extends StatelessWidget {
         width: double.infinity,
         child: Row(
           children: [
-            // 图片
+            // image
             Container(
               margin: const EdgeInsets.only(right: 15),
               width: 70,
               height: 70,
               decoration: BoxDecoration(
-                color: Color(0xFFD7E3FE), // 背景颜色，可根据需要调整
-                borderRadius: BorderRadius.circular(5), // 加圆角
+                color: Color(0xFFD7E3FE), // background color
+                borderRadius: BorderRadius.circular(5),
               ),
               child: Image.asset(imageUrl, fit: BoxFit.contain),
             ),
-            // 文本部分
+            // text part
             Expanded(
               child: IntrinsicHeight(
                 child: Container(
@@ -689,7 +686,7 @@ class ExercisePartCard extends StatelessWidget {
                 ),
               ),
             ),
-            // 按钮
+            // button
             InkWell(
               onTap: onTap,
               child: IntrinsicWidth(
