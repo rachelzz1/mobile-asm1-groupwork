@@ -17,14 +17,14 @@ class PKProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<double>(
+    return ValueListenableBuilder<double>(// Listen to changes in the progressBarWidthFactor
       valueListenable: progressBarWidthFactor,
       builder: (context, currentFactor, child) {
         final double progressBarContainerWidth = maxWidth * 0.8;
-        // Let's try increasing height first, as it might be necessary anyway for the rotated fist
-        final double progressBarHeight = 28.0; // Increased height
-        final double fistBackgroundSize = progressBarHeight * 2.2; // Adjusted multiplier
-        final double fistIconSize = progressBarHeight * 1.4;      // Adjusted multiplier
+
+        final double progressBarHeight = 28.0; 
+        final double fistBackgroundSize = progressBarHeight * 2.2; 
+        final double fistIconSize = progressBarHeight * 1.4;      
 
         return TweenAnimationBuilder<double>(
           tween: Tween<double>(
@@ -36,23 +36,23 @@ class PKProgressBar extends StatelessWidget {
           builder: (context, animatedFactor, child) {
             final double fistCenterX = progressBarContainerWidth * animatedFactor;
 
-            return SizedBox( // Use SizedBox to define the area for hit testing and layout
+            return SizedBox( 
               width: progressBarContainerWidth,
-              height: fistBackgroundSize, // Make the layout area tall enough for the overflowing fist background
+              height: fistBackgroundSize,
               child: Stack(
-                alignment: Alignment.center, // Center the progress bar within this taller SizedBox
-                clipBehavior: Clip.none, // Allow children (fist) to overflow
+                alignment: Alignment.center, 
+                clipBehavior: Clip.none, 
                 children: [
                   // Progress bar visual
                   Container(
                     width: progressBarContainerWidth,
-                    height: progressBarHeight, // Actual visual height of the bar
+                    height: progressBarHeight,
                     decoration: BoxDecoration(
                       color: rightBarColor,
                       borderRadius: BorderRadius.circular(progressBarHeight / 2),
                     ),
-                    clipBehavior: Clip.antiAlias, // Clip the colored parts of the bar
-                    child: FractionallySizedBox( // This is the orange part
+                    clipBehavior: Clip.antiAlias, 
+                    child: FractionallySizedBox( //  orange part
                       alignment: Alignment.centerLeft,
                       widthFactor: animatedFactor,
                       child: Container(
@@ -67,10 +67,7 @@ class PKProgressBar extends StatelessWidget {
                   // Fist and its background
                   Positioned(
                     left: fistCenterX - (fistBackgroundSize / 2),
-                    // top will be 0 because the Stack is centered and fistBackgroundSize is its height
-                    // Or, more explicitly if Stack alignment wasn't .center:
-                    // top: (fistBackgroundSize - fistBackgroundSize) / 2, which is 0
-                    // The fist and its background will be centered within the fistBackgroundSize height
+                    
                     child: SizedBox(
                       width: fistBackgroundSize,
                       height: fistBackgroundSize,

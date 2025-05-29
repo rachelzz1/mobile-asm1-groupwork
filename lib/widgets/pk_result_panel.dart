@@ -22,7 +22,7 @@ class PKResultPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final panelWidth = maxWidth * 0.85;
-    final panelAvatarSize = panelWidth * 0.4; // 这是直径
+    final panelAvatarSize = panelWidth * 0.4; 
     final buttonFontSize = panelWidth * 0.05;
     final titleFontSize = panelWidth * 0.09;
 
@@ -112,7 +112,7 @@ class PKResultPanel extends StatelessWidget {
                     child: ElevatedButton.icon(
                       onPressed: onRematch,
                       icon: const Icon(Icons.whatshot, color: Colors.white),
-                      label: Text( // "Rematch" 通常较短，可能不需要 FittedBox
+                      label: Text( 
                         "Rematch",
                         style: TextStyle(
                           fontSize: buttonFontSize,
@@ -140,13 +140,13 @@ class PKResultPanel extends StatelessWidget {
                         Icons.bar_chart,
                         color: Color(0xFF000000),
                       ),
-                      // 使用 FittedBox 包裹 "View Stats" 的 Text Widget
+                     
                       label: FittedBox(
-                        fit: BoxFit.scaleDown, // 如果文本太长，则缩小文本以适应单行
+                        fit: BoxFit.scaleDown, 
                         child: Text(
                           "View Stats",
                           style: TextStyle(
-                            fontSize: buttonFontSize, // 这是期望的字体大小
+                            fontSize: buttonFontSize, 
                             fontWeight: FontWeight.bold,
                             color: const Color(0xFF000000),
                           ),
