@@ -59,8 +59,9 @@ class _PKBattleScreenState extends State<PKBattleScreen>
         _winnerAvatarPath = '';
       }
 
-      Future.delayed(const Duration(seconds: 1), () {
-        // Delay here
+
+      Future.delayed(const Duration(seconds: 1), () { 
+
         if (mounted) {
           setState(() {
             _showResultPanel = true;

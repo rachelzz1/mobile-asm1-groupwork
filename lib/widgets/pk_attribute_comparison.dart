@@ -23,7 +23,7 @@ class PKAttributeComparisonContainer extends StatefulWidget {
 class _PKAttributeComparisonContainerState
     extends State<PKAttributeComparisonContainer>
     with TickerProviderStateMixin {
-  final List<AttributeData> _attributes = [
+  final List<AttributeData> _attributes = [// List of attributes
     AttributeData(
       iconPath: 'assets/icons/Endurance.svg',
       name: "Endurance",
@@ -56,12 +56,20 @@ class _PKAttributeComparisonContainerState
     ),
   ];
 
+  // Index to track the current attribute being animated
   int _currentAttributeIndex = 0;
+
+  // List of animation controllers
   List<AnimationController> _controllers = [];
+
+  // List of animations for left and right values
   List<Animation<int>> _leftValueAnimations = [];
   List<Animation<int>> _rightValueAnimations = [];
+
+  // List to track if the animation for each attribute is completed
   List<bool> _animationCompleted = [];
 
+  // List to track the total left and right values for the progress bar
   int _totalLeftValue = 0;
   int _totalRightValue = 0;
 
@@ -72,7 +80,7 @@ class _PKAttributeComparisonContainerState
 
     _totalLeftValue = 0;
     _totalRightValue = 0;
-    // Do not reset progressBarWidthFactor here, parent (PKBattleScreen) manages its initial value.
+   
 
     _controllers.forEach((controller) => controller.dispose());
     _controllers = [];
@@ -81,15 +89,18 @@ class _PKAttributeComparisonContainerState
     _animationCompleted = [];
     _currentAttributeIndex = 0;
 
-    for (var attribute in _attributes) {
+    for (var attribute in _attributes) {// Initialize the animation controllers and animations
       final controller = AnimationController(
         duration: const Duration(milliseconds: 800),
         vsync: this,
       );
       _controllers.add(controller);
+
+      // Create animations for left and right values
       _leftValueAnimations.add(
         IntTween(begin: 0, end: attribute.leftValue).animate(controller),
       );
+
       _rightValueAnimations.add(
         IntTween(begin: 0, end: attribute.rightValue).animate(controller),
       );
@@ -157,7 +168,7 @@ class _PKAttributeComparisonContainerState
             padding: EdgeInsets.only(
               bottom: i < _currentAttributeIndex ? spacing : 0,
             ),
-            child: AnimatedBuilder(
+            child: AnimatedBuilder(// Use AnimatedBuilder to animate the attributes
               animation: _controllers[i],
               builder: (context, child) {
                 final attribute = _attributes[i];
@@ -187,20 +198,20 @@ class _PKAttributeComparisonContainerState
                         borderRadius: BorderRadius.circular(12),
                         border:
                             currentUserWinsAttribute
-                                ? Border.all(color: Colors.orange, width: 3)
+                                ? Border.all(color: Colors.orange, width: 3)// Orange border for the winning attribute
                                 : null,
                         boxShadow:
                             currentUserWinsAttribute
                                 ? [
                                   BoxShadow(
-                                    color: Colors.orange.withOpacity(0.2),
+                                    color: Colors.orange.withOpacity(0.2),// Shadow for the winning attribute
                                     offset: const Offset(2, 2),
                                     blurRadius: 8,
                                   ),
                                 ]
                                 : [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.08),
+                                    color: Colors.black.withOpacity(0.08),// Shadow for the losing attribute
                                     offset: const Offset(2, 2),
                                     blurRadius: 8,
                                   ),

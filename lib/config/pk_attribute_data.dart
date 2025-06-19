@@ -1,4 +1,4 @@
-// lib/models/attribute_data.dart
+// lib/models/pk_attribute_data.dart
 class AttributeData {
   final String iconPath;
   final String name;
