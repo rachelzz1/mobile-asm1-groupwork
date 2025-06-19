@@ -5,6 +5,7 @@ import '../config/app_assets.dart';
 import '../widgets/profile_drawer.dart';
 import '../widgets/workout_card.dart';
 import '../screens/pk_battle_screen.dart';
+import '../screens/calendar.dart';
 
 class FitnessHomePage extends StatefulWidget {
   const FitnessHomePage({super.key});
@@ -58,10 +59,10 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
         }
         break;
       case 1: // Calendar
-        //Navigator.push(
-        //context,
-        //MaterialPageRoute(builder: (context) => const CalendarPage()),
-        //);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const CalendarPage()),
+        );
         break;
       case 2: // PK
         Navigator.push(
