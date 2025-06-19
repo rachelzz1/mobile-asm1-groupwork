@@ -116,6 +116,11 @@ flutter:
   - assets/images/fist.png
   - assets/images/fist-background.png
   - assets/images/crown.png
+  - assets/images/calendar_done.png
+  - assets/images/calendar_today.png
+  - assets/images/calendar_undone.png
+  - assets/images/good_woman.png
+  - assets/images/calendar.png  
 
 
 

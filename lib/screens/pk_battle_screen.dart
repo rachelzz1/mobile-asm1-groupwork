@@ -6,6 +6,7 @@ import '../widgets/pk_progress_bar.dart';
 import '../widgets/pk_attribute_comparison.dart';
 import '../widgets/pk_result_panel.dart';
 import 'home_page.dart';
+import '../screens/calendar.dart';
 
 class PKBattleScreen extends StatefulWidget {
   const PKBattleScreen({Key? key}) : super(key: key);
@@ -20,9 +21,12 @@ class _PKBattleScreenState extends State<PKBattleScreen>
 
   int _currentIndex = 2;
   late AnimationController _panelAnimationController;
-  final ValueNotifier<bool> _allAttributeAnimationsDoneNotifier =
-      ValueNotifier(false);
-  final ValueNotifier<double> _progressBarWidthFactor = ValueNotifier<double>(0.0);
+  final ValueNotifier<bool> _allAttributeAnimationsDoneNotifier = ValueNotifier(
+    false,
+  );
+  final ValueNotifier<double> _progressBarWidthFactor = ValueNotifier<double>(
+    0.0,
+  );
   bool _showResultPanel = false;
   String _winnerText = "";
   String _winnerAvatarPath = "";
@@ -55,7 +59,9 @@ class _PKBattleScreenState extends State<PKBattleScreen>
         _winnerAvatarPath = '';
       }
 
+
       Future.delayed(const Duration(seconds: 1), () { 
+
         if (mounted) {
           setState(() {
             _showResultPanel = true;
@@ -102,7 +108,9 @@ class _PKBattleScreenState extends State<PKBattleScreen>
 
   @override
   void dispose() {
-    _allAttributeAnimationsDoneNotifier.removeListener(_handleAllAnimationsDone);
+    _allAttributeAnimationsDoneNotifier.removeListener(
+      _handleAllAnimationsDone,
+    );
     _allAttributeAnimationsDoneNotifier.dispose();
     _panelAnimationController.dispose();
     _progressBarWidthFactor.dispose();
@@ -133,6 +141,11 @@ class _PKBattleScreenState extends State<PKBattleScreen>
                 MaterialPageRoute(
                   builder: (context) => const FitnessHomePage(),
                 ),
+              );
+            } else if (index == 1) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const CalendarPage()),
               );
             } else {
               setState(() {
@@ -168,8 +181,13 @@ class _PKBattleScreenState extends State<PKBattleScreen>
     );
   }
 
-  Widget _buildPlayerColumn(BuildContext context, String avatarPath,
-      String playerName, double avatarSize, double nameFontSize) {
+  Widget _buildPlayerColumn(
+    BuildContext context,
+    String avatarPath,
+    String playerName,
+    double avatarSize,
+    double nameFontSize,
+  ) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -187,20 +205,14 @@ class _PKBattleScreenState extends State<PKBattleScreen>
           child: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(
-                color: Colors.white,
-                width: 3,
-              ),
+              border: Border.all(color: Colors.white, width: 3),
             ),
             child: CircleAvatar(
               radius: avatarSize / 2,
               backgroundColor: Colors.white,
               child: Padding(
                 padding: EdgeInsets.all(avatarSize * 0.08),
-                child: Image.asset(
-                  avatarPath,
-                  fit: BoxFit.contain,
-                ),
+                child: Image.asset(avatarPath, fit: BoxFit.contain),
               ),
             ),
           ),
@@ -240,8 +252,9 @@ class _PKBattleScreenState extends State<PKBattleScreen>
               children: [
                 SingleChildScrollView(
                   child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: pageHorizontalPadding),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: pageHorizontalPadding,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -250,8 +263,13 @@ class _PKBattleScreenState extends State<PKBattleScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildPlayerColumn(context, 'assets/images/girl.png',
-                                'You', avatarSize, counterFontSize),
+                            _buildPlayerColumn(
+                              context,
+                              'assets/images/girl.png',
+                              'You',
+                              avatarSize,
+                              counterFontSize,
+                            ),
                             Padding(
                               padding: EdgeInsets.only(top: avatarSize * 0.35),
                               child: Text(
@@ -263,8 +281,13 @@ class _PKBattleScreenState extends State<PKBattleScreen>
                                 ),
                               ),
                             ),
-                            _buildPlayerColumn(context, 'assets/images/boy.png',
-                                'Kris', avatarSize, counterFontSize),
+                            _buildPlayerColumn(
+                              context,
+                              'assets/images/boy.png',
+                              'Kris',
+                              avatarSize,
+                              counterFontSize,
+                            ),
                           ],
                         ),
                         SizedBox(height: maxHeight * 0.015),

@@ -598,7 +598,7 @@ class _ExpandableTextState extends State<ExpandableText> {
         Text(
           widget.text,
           textAlign: TextAlign.justify,
-          style: widget.style ?? const TextStyle(fontSize: 14), // 使用传入的 style
+          style: widget.style ?? const TextStyle(fontSize: 14),
           maxLines: _isExpanded ? null : 2,
           overflow: TextOverflow.fade,
         ),
