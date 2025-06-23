@@ -4,6 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'home_page.dart';
 import 'pk_battle_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'profile.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
@@ -55,8 +56,10 @@ class _CalendarPageState extends State<CalendarPage> {
         MaterialPageRoute(builder: (_) => const PKBattleScreen()),
       );
     } else if (index == 3) {
-      // 替换为你的 Profile 页面
-      print("Go to Profile");
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const ProfileScreen()),
+      );
     }
   }
 

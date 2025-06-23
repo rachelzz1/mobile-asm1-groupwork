@@ -312,14 +312,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               const SizedBox(width: 16),
-              Expanded(
-                child: _buildPkCard(
-                  Icons.flash_on,
-                  '23',
-                  'Explosiveness',
-                  const Color(0xFFFFD600),
-                ),
-              ),
+              Expanded(child: _buildPkCard(Icons.flash_on, '23', 'Burst', const Color(0xFFFFD600))),
+
             ],
           ),
           const SizedBox(height: 16),
