@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // widgets/workout_card.dart
+=======
+//workout_card.dart-.-
+>>>>>>> feature-PXY
 import 'package:flutter/material.dart';
 import 'package:video/exercise_video.dart';
 
@@ -10,7 +14,7 @@ class WorkoutCard extends StatelessWidget {
   final String? backgroundImagePath;
   final Color backgroundColor;
   final double characterImageHeight;
-  final String workoutIdentifier; // Used ONLY for the switch statement logic
+  final String workoutIdentifier; // Used Only for the switch statement logic
 
   const WorkoutCard({
     super.key,
