@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "112452419873",
+    "project_id": "lazyfit-app",
+    "storage_bucket": "lazyfit-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112452419873:android:4a115068cab4d14f853e60",
+        "android_client_info": {
+          "package_name": "com.example.video"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBqAv1I6Uq9v-brkYluIx56oBHPYE8qMY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
