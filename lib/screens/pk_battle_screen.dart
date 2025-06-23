@@ -7,6 +7,7 @@ import '../widgets/pk_attribute_comparison.dart';
 import '../widgets/pk_result_panel.dart';
 import 'home_page.dart';
 import '../screens/calendar.dart';
+import 'profile.dart';
 
 class PKBattleScreen extends StatefulWidget {
   const PKBattleScreen({Key? key}) : super(key: key);
@@ -148,9 +149,10 @@ class _PKBattleScreenState extends State<PKBattleScreen>
                 MaterialPageRoute(builder: (context) => const CalendarPage()),
               );
             } else {
-              setState(() {
-                _currentIndex = index;
-              });
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+              );
               if (index == 2 && _currentIndex != 2) {}
             }
           }
