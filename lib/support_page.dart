@@ -1,6 +1,7 @@
 // support_page.dart
 import 'package:flutter/material.dart';
 import 'answer_page.dart'; // Ensure this import is present
+import 'contact.dart';
 
 class SupportPage extends StatefulWidget {
   const SupportPage({Key? key}) : super(key: key);
@@ -167,7 +168,12 @@ class _SupportPageState extends State<SupportPage> {
                     backgroundColor: const Color(0xFFFFFCF6),
                     onTap: () {
                       print('Tapped Contact with us');
-                      // TODO: Implement navigation for Contact with us
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Contact(),
+                        ), // <--- NEW NAVIGATION TO SupportPage
+                      );
                     },
                   ),
                 ],

@@ -21,6 +21,12 @@ class _CalendarPageState extends State<CalendarPage> {
   bool isWorkoutDone = false;
   bool isWorkoutGo = false;
 
+  Color workoutColor1 = Colors.grey[300]!;
+  Color workoutColor2 = Colors.grey[300]!;
+  Color workoutColor3 = Colors.grey[300]!;
+  Color workoutColor4 = Colors.grey[300]!;
+  int? selectedDay;
+
   int _currentIndex = 1;
   static const Color themeOrange = Color(0xFFFFBA3A);
 
@@ -142,33 +148,32 @@ class _CalendarPageState extends State<CalendarPage> {
               const SizedBox(height: 24),
               _calendarView(),
               const SizedBox(height: 24),
-              const Text(
-                'JUNE 27TH (TODAY)',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              Text(
+                _getSelectedDateText(),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
               ),
               const SizedBox(height: 12),
               _workoutTile(
                 "Sour and Refreshing Slim Belly",
-                isWorkoutDone
-                    ? const Color.fromARGB(255, 102, 212, 106)
-                    : isWorkoutGo
-                    ? Color.fromARGB(255, 255, 218, 118)
-                    : Colors.grey[300]!,
+                workoutColor1,
                 'assets/images/slim_belly_char.png',
               ),
               _workoutTile(
                 "Boom Burpee Burn",
-                Colors.grey[300]!,
+                workoutColor2,
                 'assets/images/burpee_char.png',
               ),
               _workoutTile(
                 "Plank Workout",
-                Colors.grey[300]!,
+                workoutColor3,
                 'assets/images/plank_char.png',
               ),
               _workoutTile(
                 "Groovy Dance Fit",
-                Colors.grey[300]!,
+                workoutColor4,
                 'assets/images/dance_fit_char.png',
               ),
             ],
@@ -227,12 +232,6 @@ class _CalendarPageState extends State<CalendarPage> {
       decoration: BoxDecoration(
         color: const Color(0xFFDDE6FF),
         borderRadius: BorderRadius.circular(12),
-        image: const DecorationImage(
-          image: NetworkImage(
-            'https://your-background-image-url.com/image.jpg',
-          ),
-          fit: BoxFit.cover,
-        ),
       ),
       child: Column(
         children: [
@@ -260,66 +259,114 @@ class _CalendarPageState extends State<CalendarPage> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: List.generate(7, (day) {
         final dateNum = weekIndex * 7 + day + 1;
-        if (dateNum > 30) return _dayCell();
+        if (dateNum > 30) {
+          return _dayCell(
+            day: null,
+            isGray: false,
+            isGrayforFuture: false,
+            isBlue: false,
+            onTap: () {},
+          );
+        }
+
+        final isGray = undoneDays.contains(dateNum);
+        final isGrayforFuture = future.contains(dateNum);
+        final isBlue = dateNum == today;
+
         return _dayCell(
           day: "$dateNum",
-          isGray: undoneDays.contains(dateNum),
-          isGrayforFuture: future.contains(dateNum),
-          isBlue: dateNum == today,
+          isGray: isGray,
+          isGrayforFuture: isGrayforFuture,
+          isBlue: isBlue,
+          onTap: () {
+            if (isGrayforFuture) return;
+            selectedDay = dateNum;
+
+            setState(() {
+              if (isBlue) {
+                workoutColor1 =
+                    isWorkoutDone
+                        ? const Color.fromARGB(255, 102, 212, 106)
+                        : isWorkoutGo
+                        ? const Color.fromARGB(255, 255, 218, 118)
+                        : Colors.grey[300]!;
+                workoutColor2 =
+                    workoutColor3 = workoutColor4 = Colors.grey[300]!;
+              } else if (isGray) {
+                workoutColor1 =
+                    workoutColor2 =
+                        workoutColor3 = workoutColor4 = Colors.grey[300]!;
+              } else {
+                workoutColor1 =
+                    workoutColor2 =
+                        workoutColor3 =
+                            workoutColor4 = const Color.fromARGB(
+                              255,
+                              102,
+                              212,
+                              106,
+                            ); // 绿色
+              }
+            });
+          },
         );
       }),
     );
   }
 
   Widget _dayCell({
-    String? day,
-    bool isGray = false,
-    bool isGrayforFuture = false,
-    bool isBlue = false,
+    required String? day,
+    required bool isGray,
+    required bool isGrayforFuture,
+    required bool isBlue,
+    required VoidCallback onTap,
   }) {
     return SizedBox(
       width: 40,
       child: Column(
         children: [
           if (day != null)
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  width: 28,
-                  height: 28,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color:
-                        isBlue
-                            ? const Color(0xFF5BB3FF)
-                            : isGray
-                            ? const Color(0xFFEDEDED)
-                            : isGrayforFuture
-                            ? const Color(0xFFEDEDED)
-                            : const Color(0xFFFCE313),
-                  ),
-                ),
-                if (!isGrayforFuture)
-                  if (isBlue)
-                    Image.asset(
-                      'assets/images/calendar_today.png',
-                      width: 25,
-                      height: 25,
-                    )
-                  else if (isGray)
-                    Image.asset(
-                      'assets/images/calendar_undone.png',
-                      width: 25,
-                      height: 25,
-                    )
-                  else
-                    Image.asset(
-                      'assets/images/calendar_done.png',
-                      width: 25,
-                      height: 25,
+            GestureDetector(
+              onTap: onTap,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: 28,
+                    height: 28,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color:
+                          isBlue
+                              ? const Color(0xFF5BB3FF)
+                              : isGray
+                              ? const Color(0xFFEDEDED)
+                              : isGrayforFuture
+                              ? const Color(0xFFEDEDED)
+                              : const Color(0xFFFCE313),
                     ),
-              ],
+                  ),
+                  if (!isGrayforFuture)
+                    if (isBlue)
+                      Image.asset(
+                        'assets/images/calendar_today.png',
+                        width: 25,
+                        height: 25,
+                      )
+                    else if (isGray)
+                      Image.asset(
+                        'assets/images/calendar_undone.png',
+                        width: 25,
+                        height: 25,
+                      )
+                    else
+                      Image.asset(
+                        'assets/images/calendar_done.png',
+                        width: 25,
+                        height: 25,
+                      ),
+                ],
+              ),
             )
           else
             const SizedBox(height: 28),
@@ -356,5 +403,23 @@ class _CalendarPageState extends State<CalendarPage> {
         ],
       ),
     );
+  }
+
+  String _getSelectedDateText() {
+    if (selectedDay == null) return 'JUNE 27TH (TODAY)';
+
+    String suffix;
+    if (selectedDay == 1 || selectedDay == 21 || selectedDay == 31) {
+      suffix = 'ST';
+    } else if (selectedDay == 2 || selectedDay == 22) {
+      suffix = 'ND';
+    } else if (selectedDay == 3 || selectedDay == 23) {
+      suffix = 'RD';
+    } else {
+      suffix = 'TH';
+    }
+
+    final todayText = selectedDay == today ? ' (TODAY)' : '';
+    return 'JUNE $selectedDay$suffix$todayText';
   }
 }
