@@ -263,7 +263,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               Expanded(child: _buildPkCard(Icons.battery_charging_full, '20', 'Endurance', const Color(0xFFFFA726))),
               const SizedBox(width: 16),
-              Expanded(child: _buildPkCard(Icons.flash_on, '23', 'Explosiveness', const Color(0xFFFFD600))),
+              Expanded(child: _buildPkCard(Icons.flash_on, '23', 'Burst', const Color(0xFFFFD600))),
             ],
           ),
           const SizedBox(height: 16),
