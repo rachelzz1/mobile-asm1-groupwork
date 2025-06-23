@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-// widgets/workout_card.dart
-=======
-//workout_card.dart-.-
->>>>>>> feature-PXY
 import 'package:flutter/material.dart';
 import 'package:video/exercise_video.dart';
 
