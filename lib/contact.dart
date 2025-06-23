@@ -45,10 +45,15 @@ class ContactState extends State<Contact> {
                   horizontal: 16,
                 ),
                 child: Row(
-                  children: const [
-                    Icon(Icons.arrow_back, size: 22),
-                    SizedBox(width: 29),
-                    Text(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Icon(Icons.arrow_back, size: 22),
+                    ),
+                    const SizedBox(width: 29),
+                    const Text(
                       "Customer Service",
                       style: TextStyle(
                         fontSize: 24,
