@@ -265,7 +265,7 @@ class _CalendarPageState extends State<CalendarPage> {
             isGray: false,
             isGrayforFuture: false,
             isBlue: false,
-            onTap: () {}, // 空白日不响应
+            onTap: () {},
           );
         }
 
@@ -279,7 +279,7 @@ class _CalendarPageState extends State<CalendarPage> {
           isGrayforFuture: isGrayforFuture,
           isBlue: isBlue,
           onTap: () {
-            if (isGrayforFuture) return; // 不处理未来
+            if (isGrayforFuture) return;
             selectedDay = dateNum;
 
             setState(() {
@@ -319,7 +319,7 @@ class _CalendarPageState extends State<CalendarPage> {
     required bool isGray,
     required bool isGrayforFuture,
     required bool isBlue,
-    required VoidCallback onTap, // 👈 加这一行
+    required VoidCallback onTap,
   }) {
     return SizedBox(
       width: 40,
@@ -327,7 +327,7 @@ class _CalendarPageState extends State<CalendarPage> {
         children: [
           if (day != null)
             GestureDetector(
-              onTap: onTap, // 👈 设置点击事件
+              onTap: onTap,
               child: Stack(
                 alignment: Alignment.center,
                 children: [
@@ -406,7 +406,7 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   String _getSelectedDateText() {
-    if (selectedDay == null) return 'JUNE 27TH (TODAY)'; // 初始状态
+    if (selectedDay == null) return 'JUNE 27TH (TODAY)';
 
     String suffix;
     if (selectedDay == 1 || selectedDay == 21 || selectedDay == 31) {
