@@ -2,16 +2,37 @@
 import 'package:flutter/material.dart';
 import '../config/app_assets.dart';
 import '../setting.dart';
+import 'package:get_storage/get_storage.dart';
 
-class ProfileDrawer extends StatelessWidget {
+class ProfileDrawer extends StatefulWidget {
   const ProfileDrawer({super.key});
 
-  final String todayExerciseDuration = "25 min";
-  final int tasksCompleted = 2;
+  @override
+  State<ProfileDrawer> createState() => _ProfileDrawerState();
+}
+
+class _ProfileDrawerState extends State<ProfileDrawer> {
+  //final String todayExerciseDuration = "0 min";
+  //final int tasksCompleted = 0;
   final String userName = "Kris";
+
+  bool isWorkoutDone = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final storage = GetStorage();
+    final Donevalue = storage.read('isDone') ?? false;
+    setState(() {
+      isWorkoutDone = Donevalue;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final String todayExerciseDuration = isWorkoutDone ? "12 min" : "0 min";
+    final int tasksCompleted = isWorkoutDone ? 1 : 0;
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
