@@ -22,42 +22,41 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   int _selectedIndex = 3;
-  static const Color selectedColor = Colors.deepPurple;
   static const Color unselectedColor = Colors.grey;
   static const double iconBottomPadding = 4.0;
   static const double labelFontSize = 12.0;
 
   void _onItemTapped(int index) {
-  if (_selectedIndex == index) return;
+    if (_selectedIndex == index) return;
 
-  setState(() {
-    _selectedIndex = index;
-  });
+    setState(() {
+      _selectedIndex = index;
+    });
 
-  switch (index) {
-    case 0:
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const FitnessHomePage()),
-      );
-      break;
-    case 1:
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const CalendarPage()),
-      );
-      break;
-    case 2:
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const PKBattleScreen()),
-      );
-      break;
-    case 3:
-      // 当前页，无需跳转
-      break;
+    switch (index) {
+      case 0:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const FitnessHomePage()),
+        );
+        break;
+      case 1:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const CalendarPage()),
+        );
+        break;
+      case 2:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const PKBattleScreen()),
+        );
+        break;
+      case 3:
+        // 当前页，无需跳转
+        break;
+    }
   }
-}
 
   Widget _buildSvgNavIcon({required String assetName, required Color color}) {
     return SvgPicture.asset(
@@ -79,7 +78,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               padding: const EdgeInsets.only(bottom: iconBottomPadding),
               child: _buildSvgNavIcon(
                 assetName: AppAssets.navHomeIconSVG,
-                color: _selectedIndex == 0 ? const Color.fromARGB(255, 255, 152, 0) : unselectedColor,
+                color:
+                    _selectedIndex == 0
+                        ? const Color.fromARGB(255, 255, 152, 0)
+                        : unselectedColor,
               ),
             ),
             label: 'Home',
@@ -89,7 +91,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               padding: const EdgeInsets.only(bottom: iconBottomPadding),
               child: _buildSvgNavIcon(
                 assetName: AppAssets.navCalendarIconSVG,
-                color: _selectedIndex == 1 ? const Color.fromARGB(255, 255, 152, 0) : unselectedColor,
+                color:
+                    _selectedIndex == 1
+                        ? const Color.fromARGB(255, 255, 152, 0)
+                        : unselectedColor,
               ),
             ),
             label: 'Calendar',
@@ -99,7 +104,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               padding: const EdgeInsets.only(bottom: iconBottomPadding),
               child: _buildSvgNavIcon(
                 assetName: AppAssets.navPkIconSVG,
-                color: _selectedIndex == 2 ? const Color.fromARGB(255, 255, 152, 0) : unselectedColor,
+                color:
+                    _selectedIndex == 2
+                        ? const Color.fromARGB(255, 255, 152, 0)
+                        : unselectedColor,
               ),
             ),
             label: 'PK',
@@ -109,7 +117,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               padding: const EdgeInsets.only(bottom: iconBottomPadding),
               child: _buildSvgNavIcon(
                 assetName: AppAssets.navProfileIconSVG,
-                color: _selectedIndex == 3 ? const Color.fromARGB(255, 255, 152, 0) : unselectedColor,
+                color:
+                    _selectedIndex == 3
+                        ? const Color.fromARGB(255, 255, 152, 0)
+                        : unselectedColor,
               ),
             ),
             label: 'Profile',
@@ -175,7 +186,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Kris', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            const Text(
+              'Kris',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
             Icon(Icons.chevron_right, color: Colors.grey.shade400),
           ],
         ),
@@ -196,11 +210,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               child: RichText(
                 text: TextSpan(
-                  style: const TextStyle(fontSize: 14, color: Colors.black87, fontFamily: 'sans-serif'),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black87,
+                    fontFamily: 'sans-serif',
+                  ),
                   children: const [
-                    TextSpan(text: '51 ', style: TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(
+                      text: '51 ',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     TextSpan(text: 'Following  '),
-                    TextSpan(text: '39 ', style: TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(
+                      text: '39 ',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     TextSpan(text: 'Following'),
                   ],
                 ),
@@ -214,8 +238,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 color: const Color(0xFFEBF4FC),
                 border: Border.all(color: const Color(0xFFD2E6F8), width: 1.5),
               ),
-              child: Icon(Icons.person_add_alt_1_outlined, color: Colors.blue.shade700, size: 20),
-            )
+              child: Icon(
+                Icons.person_add_alt_1_outlined,
+                color: Colors.blue.shade700,
+                size: 20,
+              ),
+            ),
           ],
         ),
       ],
@@ -244,9 +272,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(value, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+        Text(
+          value,
+          style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 4),
-        Text(label, textAlign: TextAlign.center, style: TextStyle(fontSize: 13, color: Colors.grey.shade600, height: 1.3)),
+        Text(
+          label,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 13,
+            color: Colors.grey.shade600,
+            height: 1.3,
+          ),
+        ),
       ],
     );
   }
@@ -257,11 +296,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('PK Value Overview', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const Text(
+            'PK Value Overview',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 16),
           Row(
             children: [
-              Expanded(child: _buildPkCard(Icons.battery_charging_full, '20', 'Endurance', const Color(0xFFFFA726))),
+              Expanded(
+                child: _buildPkCard(
+                  Icons.battery_charging_full,
+                  '20',
+                  'Endurance',
+                  const Color(0xFFFFA726),
+                ),
+              ),
               const SizedBox(width: 16),
               Expanded(child: _buildPkCard(Icons.flash_on, '23', 'Burst', const Color(0xFFFFD600))),
             ],
@@ -269,9 +318,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: 16),
           Row(
             children: [
-              Expanded(child: _buildPkCard(Icons.fitness_center, '35', 'Strength', const Color(0xFFFB8C00))),
+              Expanded(
+                child: _buildPkCard(
+                  Icons.fitness_center,
+                  '35',
+                  'Strength',
+                  const Color(0xFFFB8C00),
+                ),
+              ),
               const SizedBox(width: 16),
-              Expanded(child: _buildPkCard(Icons.self_improvement, '45', 'Flexibility', const Color(0xFF42A5F5))),
+              Expanded(
+                child: _buildPkCard(
+                  Icons.self_improvement,
+                  '45',
+                  'Flexibility',
+                  const Color(0xFF42A5F5),
+                ),
+              ),
             ],
           ),
         ],
@@ -286,17 +349,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.shade200),
-        boxShadow: [BoxShadow(color: Colors.grey.shade100, blurRadius: 5, offset: const Offset(0, 2))],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade100,
+            blurRadius: 5,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
-      child: Row(children: [
-        Icon(icon, color: color, size: 28),
-        const SizedBox(width: 12),
-        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 2),
-          Text(label, style: TextStyle(fontSize: 14, color: color, fontWeight: FontWeight.w600)),
-        ])
-      ]),
+      child: Row(
+        children: [
+          Icon(icon, color: color, size: 28),
+          const SizedBox(width: 12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: color,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -309,18 +396,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Achievement', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const Text(
+                'Achievement',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
               InkWell(
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const AchievementScreen()),
+                    MaterialPageRoute(
+                      builder: (context) => const AchievementScreen(),
+                    ),
                   );
                 },
                 borderRadius: BorderRadius.circular(8),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  child: Text('Show All', style: TextStyle(fontSize: 14, color: Colors.blue.shade300, fontWeight: FontWeight.w600)),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  child: Text(
+                    'Show All',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.blue.shade300,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -332,7 +434,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: Colors.grey.shade200),
-              boxShadow: [BoxShadow(color: Colors.grey.shade100, blurRadius: 5, offset: const Offset(0, 2))],
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.shade100,
+                  blurRadius: 5,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -342,7 +450,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 _buildAchievementImage('assets/images/Reward2.png'),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
@@ -370,9 +478,7 @@ class AchievementScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('Achievement'),
-      ),
+      appBar: AppBar(title: const Text('Achievement')),
       body: GridView.builder(
         padding: const EdgeInsets.all(16.0),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
