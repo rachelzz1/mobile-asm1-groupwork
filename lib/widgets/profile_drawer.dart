@@ -1,6 +1,7 @@
 // widgets/profile_drawer.dart
 import 'package:flutter/material.dart';
 import '../config/app_assets.dart';
+import '../setting.dart';
 
 class ProfileDrawer extends StatelessWidget {
   const ProfileDrawer({super.key});
@@ -112,7 +113,12 @@ class ProfileDrawer extends StatelessWidget {
             leading: const Icon(Icons.settings_outlined),
             title: const Text('Settings'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SettingsPage(),
+                ), // <--- NEW NAVIGATION TO AppearancePage
+              );
             },
           ),
           const SizedBox(height: 90),
