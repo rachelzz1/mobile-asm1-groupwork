@@ -1,4 +1,4 @@
-// fitness_timer_page_2.dart
+// page2
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'progress_painter.dart';
