@@ -1,11 +1,12 @@
 // screens/home_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../config/app_assets.dart';
+import '../config/app_assets.dart' as config_assets;
 import '../widgets/profile_drawer.dart';
 import '../widgets/workout_card.dart';
 import '../screens/pk_battle_screen.dart';
 import '../screens/calendar.dart';
+import '../screens/profile.dart';
 
 class FitnessHomePage extends StatefulWidget {
   const FitnessHomePage({super.key});
@@ -71,15 +72,10 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
         );
         break;
       case 3: // Profile
-        // Option 1: Open Drawer (if Profile tab is just for drawer)
-        // _scaffoldKey.currentState?.openDrawer();
-
-        // Option 2: Navigate to a dedicated Profile Page
-
-        //Navigator.push(
-        //context,
-        //MaterialPageRoute(builder: (context) => const ProfileSummaryPage()),
-        //);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ProfileScreen()),
+      );
         break;
     }
   }
@@ -317,12 +313,12 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
                             radius: 35,
                             backgroundColor: Colors.grey[200],
                             backgroundImage: const AssetImage(
-                              AppAssets.profileImageAsset,
+                              config_assets.AppAssets.profileImageAsset,
                             ),
                             onBackgroundImageError: (e, s) {},
                             child: ClipOval(
                               child: Image.asset(
-                                AppAssets.profileImageAsset,
+                                config_assets.AppAssets.profileImageAsset,
                                 fit: BoxFit.cover,
                                 width: 70,
                                 height: 70,
@@ -359,8 +355,8 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
                         title: "Boom Burpee\nBurn",
                         duration: 8,
                         calories: "80-140",
-                        characterImagePath: AppAssets.burpeeCharAsset,
-                        backgroundImagePath: AppAssets.burpeeBgAsset,
+                        characterImagePath: config_assets.AppAssets.burpeeCharAsset,
+                        backgroundImagePath: config_assets.AppAssets.burpeeBgAsset,
                         backgroundColor: Colors.orange.shade300,
                         characterImageHeight: 85,
                         workoutIdentifier: "boom_burpee_burn",
@@ -369,8 +365,8 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
                         title: "Sour and\nRefreshing\nSlim Belly",
                         duration: 12,
                         calories: "76-114",
-                        characterImagePath: AppAssets.slimBellyCharAsset,
-                        backgroundImagePath: AppAssets.slimBellyBgAsset,
+                        characterImagePath: config_assets.AppAssets.slimBellyCharAsset,
+                        backgroundImagePath: config_assets.AppAssets.slimBellyBgAsset,
                         backgroundColor: Colors.lightBlue.shade200,
                         characterImageHeight: 95,
                         workoutIdentifier: "slim_belly_yoga",
@@ -379,8 +375,8 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
                         title: "Groovy\nDance Fit",
                         duration: 15,
                         calories: "100-130",
-                        characterImagePath: AppAssets.danceFitCharAsset,
-                        backgroundImagePath: AppAssets.danceFitBgAsset,
+                        characterImagePath: config_assets.AppAssets.danceFitCharAsset,
+                        backgroundImagePath: config_assets.AppAssets.danceFitBgAsset,
                         backgroundColor: Colors.yellow.shade600,
                         characterImageHeight: 85,
                         workoutIdentifier: "groovy_dance_fit",
@@ -389,8 +385,8 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
                         title: "Plank\nWorkout",
                         duration: 5,
                         calories: "20-50",
-                        characterImagePath: AppAssets.plankCharAsset,
-                        backgroundImagePath: AppAssets.plankBgAsset,
+                        characterImagePath: config_assets.AppAssets.plankCharAsset,
+                        backgroundImagePath: config_assets.AppAssets.plankBgAsset,
                         backgroundColor: Colors.deepOrange.shade400,
                         characterImageHeight: 83,
                         workoutIdentifier: "plank_challenge",
