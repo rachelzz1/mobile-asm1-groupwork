@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'home_page.dart';
 import 'pk_battle_screen.dart';
 import 'calendar.dart';
+import 'welcome_screen.dart';
 
 // --- 图标资源路径管理类 ---
 class AppAssets {
@@ -139,21 +140,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
         elevation: 0.0,
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildHeader(context),
-            const SizedBox(height: 16),
-            _buildUserInfo(),
-            const SizedBox(height: 24),
-            _buildOverallStats(),
-            const SizedBox(height: 30),
-            _buildPkValueOverview(),
-            const SizedBox(height: 30),
-            _buildAchievementSection(context),
-            const SizedBox(height: 30),
-          ],
+  child: Column(
+    children: [
+      _buildHeader(context),
+      const SizedBox(height: 16),
+      _buildUserInfo(),
+      const SizedBox(height: 24),
+      _buildOverallStats(),
+      const SizedBox(height: 30),
+      _buildPkValueOverview(),
+      const SizedBox(height: 30),
+      _buildAchievementSection(context),
+      const SizedBox(height: 30),
+
+      // ✅ ✅ ✅ 在这里添加按钮 ✅ ✅ ✅
+      Padding(
+        padding: const EdgeInsets.only(bottom: 40),
+        child: Center(
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.grey.shade300,
+              foregroundColor: Colors.black87,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+              elevation: 0,
+            ),
+            child: const Text(
+              'Log Out of This Account',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+            ),
+          ),
         ),
-      ),
+      )
+    ],
+  ),
+),
     );
   }
 
