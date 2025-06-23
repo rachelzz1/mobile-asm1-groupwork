@@ -1,7 +1,7 @@
-// main.dart
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'screens/home_page.dart';
+//import 'screens/home_page.dart';
+import 'screens/welcome_screen.dart'; 
 //test pxy
 
 void main() async {
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
       ),
-      home: const FitnessHomePage(),
+      home: const WelcomeScreen(), // 使用 WelcomeScreen 作为首页
       debugShowCheckedModeBanner: false,
     );
   }

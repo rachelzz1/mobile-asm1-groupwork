@@ -22,7 +22,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   int _selectedIndex = 3;
-  static const Color selectedColor = Colors.deepPurple;
   static const Color unselectedColor = Colors.grey;
   static const double iconBottomPadding = 4.0;
   static const double labelFontSize = 12.0;

@@ -121,6 +121,7 @@ flutter:
   - assets/images/calendar_today.png
   - assets/images/calendar_undone.png
   - assets/images/good_woman.png
+<<<<<<< HEAD
   - assets/images/calendar.png  
   - assets/images/account-settings.png
   - assets/images/notification.png
@@ -139,6 +140,11 @@ flutter:
   - assets/images/Reward4grey.png
   - assets/images/Reward5.png
   - assets/images/Reward6grey.png
+=======
+  - assets/images/calendar.png 
+  - assets/images/logo-font.png 
+  - assets/images/logo-guy.png
+>>>>>>> 3ff3fbb292356353e5dfc19713860f568153c716
 
 
 
