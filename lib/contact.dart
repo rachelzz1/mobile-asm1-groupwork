@@ -38,7 +38,6 @@ class ContactState extends State<Contact> {
           color: Colors.white,
           child: Column(
             children: [
-              // 顶部标题栏
               Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 20,
@@ -65,10 +64,8 @@ class ContactState extends State<Contact> {
                 ),
               ),
 
-              // 分割线
               Container(height: 2, color: Color(0xFFD9D9D9)),
 
-              // 聊天内容区域
               Expanded(
                 child: ListView.builder(
                   controller: _scrollController,
@@ -90,14 +87,13 @@ class ContactState extends State<Contact> {
                         ),
                       );
                     } else if (index == 1) {
-                      // 客服消息 + 左侧圆形头像
                       return Padding(
                         padding: const EdgeInsets.only(top: 16),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              width: 36, // 比图片稍大，露出背景颜色
+                              width: 36,
                               height: 36,
                               decoration: const BoxDecoration(
                                 color: Color(0xFFFFEFD5), // 米色背景
@@ -134,7 +130,6 @@ class ContactState extends State<Contact> {
                         ),
                       );
                     } else {
-                      // 用户消息 + 右侧圆形头像
                       final msg = _messages[index - 2];
                       return Padding(
                         padding: const EdgeInsets.only(top: 12),
@@ -156,10 +151,10 @@ class ContactState extends State<Contact> {
                             ),
                             const SizedBox(width: 8),
                             Container(
-                              width: 36, // 比图片稍大，露出背景颜色
+                              width: 36,
                               height: 36,
                               decoration: const BoxDecoration(
-                                color: Color(0xFFE0F7FA), // 米色背景
+                                color: Color(0xFFE0F7FA),
                                 shape: BoxShape.circle,
                               ),
                               child: ClipOval(
@@ -179,7 +174,6 @@ class ContactState extends State<Contact> {
                 ),
               ),
 
-              // 底部输入栏
               Container(
                 padding: const EdgeInsets.symmetric(
                   vertical: 12,
@@ -194,13 +188,12 @@ class ContactState extends State<Contact> {
                 ),
                 child: Row(
                   children: [
-                    // 拍照图标
                     Container(
                       width: 24,
                       height: 24,
                       margin: const EdgeInsets.only(right: 8),
-                      child: Image.network(
-                        "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/wbfPbyq3KV/2tk7jmt3_expires_30_days.png",
+                      child: Image.asset(
+                        'assets/images/camera.png',
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -209,12 +202,11 @@ class ContactState extends State<Contact> {
                       width: 22,
                       height: 22,
                       margin: const EdgeInsets.only(right: 10),
-                      child: Image.network(
-                        "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/wbfPbyq3KV/wnygmkq4_expires_30_days.png",
+                      child: Image.asset(
+                        'assets/images/insert-picture-icon.png',
                         fit: BoxFit.fill,
                       ),
                     ),
-                    // 输入框 + 发送按钮
                     Expanded(
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12),

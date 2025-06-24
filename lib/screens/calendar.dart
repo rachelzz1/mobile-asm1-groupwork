@@ -308,7 +308,7 @@ class _CalendarPageState extends State<CalendarPage> {
                               102,
                               212,
                               106,
-                            ); // 绿色
+                            );
               }
             });
           },
