@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 //import 'screens/home_page.dart';
 import 'screens/welcome_screen.dart'; 
+import 'package:firebase_core/firebase_core.dart'; // 确保已导入
+import 'package:cloud_firestore/cloud_firestore.dart';
 //test pxy
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // 必须加这句
+  await Firebase.initializeApp();            // 初始化 Firebase
   await GetStorage.init();
   final box = GetStorage();
   box.write('isDone', false);

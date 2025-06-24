@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// 1. 导入 Firestore 包
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'home_page.dart';
 import 'login_screen.dart';
 import 'welcome_screen.dart';
@@ -15,6 +17,8 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  // 2. 为 Username 添加新的控制器
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isButtonEnabled = false;
@@ -22,21 +26,90 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   void initState() {
     super.initState();
+    // 3. 监听所有控制器的变化
+    _usernameController.addListener(_updateButtonState);
     _emailController.addListener(_updateButtonState);
     _passwordController.addListener(_updateButtonState);
   }
 
   @override
   void dispose() {
+    _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
   void _updateButtonState() {
+    // 4. 更新按钮状态逻辑，确保所有字段都已填写
     setState(() {
-      _isButtonEnabled = _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
+      _isButtonEnabled = _usernameController.text.isNotEmpty &&
+          _emailController.text.isNotEmpty &&
+          _passwordController.text.isNotEmpty;
     });
+  }
+  
+  // 5. 创建核心的注册函数
+  Future<void> _signUp() async {
+    // 显示加载动画
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator()),
+    );
+
+    try {
+      // 检查邮箱是否已存在
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: _emailController.text.trim())
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        Navigator.pop(context); // 关闭加载动画
+        // 邮箱已存在，显示错误提示
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('This email is already in use.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        return; // 提前退出函数
+      }
+
+      // 邮箱不存在，创建新用户
+      await FirebaseFirestore.instance.collection('users').add({
+        'username': _usernameController.text.trim(),
+        'email': _emailController.text.trim(),
+        'password': _passwordController.text.trim(),
+        'createdAt': Timestamp.now(),
+      });
+      
+      Navigator.pop(context); // 关闭加载动画
+
+      // 注册成功，跳转到主页
+      if (mounted) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const FitnessHomePage()),
+          (route) => false,
+        );
+      }
+    } catch (e) {
+      Navigator.pop(context); // 关闭加载动画
+      // 处理其他可能的 Firestore 错误
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('An error occurred: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -92,10 +165,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               SizedBox(height: titleSpacing),
               Text(
-                'Create your account, it takes less than a minute. Enter your email and password.',
+                'Create your account, it takes less than a minute. Enter your username, email and password.',
                 style: TextStyle(fontSize: subtitleFontSize, color: lightTextColor),
               ),
               SizedBox(height: titleSpacing * 1.5),
+              
+              // 6. 添加 Username 输入框
+              _buildTextField(
+                controller: _usernameController,
+                hint: 'Username',
+              ),
+              SizedBox(height: inputSpacing),
 
               _buildTextField(
                 controller: _emailController,
@@ -115,22 +195,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: buttonHeight,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: _isButtonEnabled ? yellowColor : const Color.fromARGB(255, 132, 132, 132),
+                    backgroundColor: _isButtonEnabled ? yellowColor : Colors.grey[400],
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(17),
                     ),
                   ),
-                  // 2. 修改这里的跳转逻辑
-                  onPressed: _isButtonEnabled
-                      ? () {
-                          // 跳转到主页并清除导航堆栈
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => const FitnessHomePage()),
-                            (route) => false, // 清除所有旧路由
-                          );
-                        }
-                      : null,
+                  // 7. 将按钮的 onPressed 事件连接到我们的注册函数
+                  onPressed: _isButtonEnabled ? _signUp : null,
                   child: Text(
                     'Create an Account',
                     style: TextStyle(

@@ -1,24 +1,18 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
-    id("com.google.gms.google-services") version "4.4.2" apply false
-    id("com.google.gms.google-services")
+    //id("org.jetbrains.kotlin.android") 
 }
-dependencies {More actions
-  // Import the Firebase BoM
-  implementation(platform("com.google.firebase:firebase-bom:33.15.0"))
 
+dependencies {
 
-  // TODO: Add the dependencies for Firebase products you want to use
-  // When using the BoM, don't specify versions in Firebase dependencies
-  implementation("com.google.firebase:firebase-analytics")
+    // Firebase BOM and related dependencies
+    implementation(platform("com.google.firebase:firebase-bom:33.15.0"))
+    implementation("com.google.firebase:firebase-analytics")
 
-
-  // Add the dependencies for any other desired Firebase products
-  // https://firebase.google.com/docs/android/setup#available-libraries
 }
+
 android {
     namespace = "com.example.video"
     compileSdk = flutter.compileSdkVersion
@@ -58,3 +52,5 @@ android {
 flutter {
     source = "../.."
 }
+
+apply(plugin = "com.google.gms.google-services")

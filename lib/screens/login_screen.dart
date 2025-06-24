@@ -1,9 +1,9 @@
 // lib/screens/login_screen.dart
 
 import 'package:flutter/material.dart';
-// 1. 新增导入，让文件认识 FitnessHomePage
-import 'home_page.dart'; 
-import 'signup_screen.dart'; 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'home_page.dart';
+import 'signup_screen.dart';
 import 'welcome_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -14,28 +14,74 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _userController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isButtonEnabled = false;
+
+  String? _errorMessage;
 
   @override
   void initState() {
     super.initState();
-    _userController.addListener(_updateButtonState);
-    _passwordController.addListener(_updateButtonState);
+    _emailController.addListener(_onTextChanged);
+    _passwordController.addListener(_onTextChanged);
   }
 
   @override
   void dispose() {
-    _userController.dispose();
+    _emailController.removeListener(_onTextChanged);
+    _passwordController.removeListener(_onTextChanged);
+    _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
-  void _updateButtonState() {
+  void _onTextChanged() {
     setState(() {
-      _isButtonEnabled = _userController.text.isNotEmpty && _passwordController.text.isNotEmpty;
+      _isButtonEnabled =
+          _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
+      if (_errorMessage != null) {
+        _errorMessage = null;
+      }
     });
+  }
+
+  Future<void> _signIn() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator()),
+    );
+
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: _emailController.text.trim())
+          .where('password', isEqualTo: _passwordController.text.trim())
+          .limit(1)
+          .get();
+
+      Navigator.pop(context);
+
+      if (querySnapshot.docs.isNotEmpty) {
+        if (mounted) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const FitnessHomePage()),
+            (route) => false,
+          );
+        }
+      } else {
+        setState(() {
+          _errorMessage = 'Incorrect email or password.';
+        });
+      }
+    } catch (e) {
+      Navigator.pop(context);
+      setState(() {
+        _errorMessage = 'An error occurred. Please try again later.';
+      });
+    }
   }
 
   @override
@@ -88,13 +134,13 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(height: titleSpacing),
               Text(
-                'We happy to see you here again. Enter your email address or user id and password.',
+                'We are happy to see you here again. Enter your email address and password.',
                 style: TextStyle(fontSize: subtitleFontSize, color: lightTextColor),
               ),
               SizedBox(height: titleSpacing * 2.5),
               _buildTextField(
-                controller: _userController,
-                hint: 'Email/User ID',
+                controller: _emailController,
+                hint: 'Email',
               ),
               SizedBox(height: inputSpacing),
               _buildTextField(
@@ -102,7 +148,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 hint: 'Password',
                 isPassword: true,
               ),
+
+              // **** 这部分是修改的核心 ****
+              Visibility(
+                visible: _errorMessage != null,
+                maintainState: true,
+                maintainAnimation: true,
+                maintainSize: true,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    _errorMessage ?? '', // 提供一个空字符串作为占位
+                    style: const TextStyle(color: Colors.red, fontSize: 14),
+                  ),
+                ),
+              ),
+              // **** 修改结束 ****
+
               SizedBox(height: titleSpacing * 2.5),
+              
               SizedBox(
                 width: double.infinity,
                 height: buttonHeight,
@@ -113,17 +177,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  // 2. 修改这里的跳转逻辑
-                  onPressed: _isButtonEnabled
-                      ? () {
-                          // 使用 pushAndRemoveUntil 跳转到主页，并清空之前的页面
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => const FitnessHomePage()),
-                            (route) => false, // 清除所有旧路由
-                          );
-                        }
-                      : null,
+                  onPressed: _isButtonEnabled ? _signIn : null,
                   child: Text(
                     'Log In',
                     style: TextStyle(
@@ -175,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
     required String hint,
     bool isPassword = false,
   }) {
-    // ... (这个辅助方法没有变化)
+    // ... 这个辅助方法没有变化 ...
     return TextField(
       controller: controller,
       obscureText: isPassword,
@@ -202,7 +256,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildDivider() {
-    // ... (这个辅助方法没有变化)
+    // ... 这个辅助方法没有变化 ...
     return Row(
       children: <Widget>[
         Expanded(child: Divider(color: Colors.grey[300])),

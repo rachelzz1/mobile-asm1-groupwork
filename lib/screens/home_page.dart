@@ -9,6 +9,7 @@ import '../screens/calendar.dart';
 import '../screens/profile.dart';
 
 class FitnessHomePage extends StatefulWidget {
+  
   const FitnessHomePage({super.key});
 
   @override

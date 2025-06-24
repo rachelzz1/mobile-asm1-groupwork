@@ -1,3 +1,14 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.google.gms:google-services:4.4.1")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.0") // 改为2.0.0
+    }
+}
+
 allprojects {
     repositories {
         google()
