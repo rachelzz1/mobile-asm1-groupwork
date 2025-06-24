@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'support_page.dart';
 
 class GuidanceScreen extends StatelessWidget {
   const GuidanceScreen({super.key});
@@ -56,8 +57,12 @@ class GuidanceScreen extends StatelessWidget {
         IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black54),
           onPressed: () {
-            // 返回按钮的逻辑，例如 Navigator.pop(context);
-            print("Back button pressed");
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+              builder: (context) => const SupportPage(),
+              ), // <--- NEW NAVIGATION TO SupportPage
+            );
           },
         ),
         const SizedBox(width: 8),
