@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'answer_page.dart'; // Ensure this import is present
 import 'contact.dart';
+import 'guidance_screen.dart';
 
 class SupportPage extends StatefulWidget {
   const SupportPage({Key? key}) : super(key: key);
@@ -158,7 +159,12 @@ class _SupportPageState extends State<SupportPage> {
                     backgroundColor: const Color(0xFFFFFCF6),
                     onTap: () {
                       print('Tapped User guidance');
-                      // TODO: Implement navigation for User guidance
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const GuidanceScreen(),
+                        ), // <--- NEW NAVIGATION TO SupportPage
+                      );
                     },
                   ),
                   const SizedBox(height: 16.0),
