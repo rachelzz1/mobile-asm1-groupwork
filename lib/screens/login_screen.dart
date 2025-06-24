@@ -149,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 isPassword: true,
               ),
 
-              // **** 这部分是修改的核心 ****
+              
               Visibility(
                 visible: _errorMessage != null,
                 maintainState: true,
@@ -158,12 +158,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Text(
-                    _errorMessage ?? '', // 提供一个空字符串作为占位
+                    _errorMessage ?? '', 
                     style: const TextStyle(color: Colors.red, fontSize: 14),
                   ),
                 ),
               ),
-              // **** 修改结束 ****
+              
 
               SizedBox(height: titleSpacing * 2.5),
               
@@ -229,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
     required String hint,
     bool isPassword = false,
   }) {
-    // ... 这个辅助方法没有变化 ...
+    
     return TextField(
       controller: controller,
       obscureText: isPassword,
@@ -256,7 +256,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildDivider() {
-    // ... 这个辅助方法没有变化 ...
+   
     return Row(
       children: <Widget>[
         Expanded(child: Divider(color: Colors.grey[300])),
