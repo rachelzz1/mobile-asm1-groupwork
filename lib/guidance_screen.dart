@@ -82,11 +82,7 @@ class GuidanceScreen extends StatelessWidget {
         const Spacer(),
         Column(
           children: [
-            Image.asset('assets/images/entire-logo.png', height: 60),
-            const Text(
-              'LazyFit',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xFF4A4A4A)),
-            )
+            Image.asset('assets/images/entire-logo.png', height: 100),
           ],
         )
       ],
@@ -143,7 +139,7 @@ class GuidanceScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildStepHeader(1, 'Choose the program you like', stepLabelColor),
+        _buildStepHeader(1, 'Choose the program', stepLabelColor),
         const SizedBox(height: 20),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -205,7 +201,7 @@ class GuidanceScreen extends StatelessWidget {
               ],
             ),
             Positioned(
-              top: 30,
+              top: 45,
               right: 0,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
