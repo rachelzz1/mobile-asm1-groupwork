@@ -232,7 +232,7 @@ class GuidanceScreen extends StatelessWidget {
   Widget _buildStep3Content(Color stepLabelColor) {
     return Column(
       children: [
-        _buildStepHeader(3, 'Have exciting PK with others', stepLabelColor),
+        _buildStepHeader(3, 'Exciting PK with others', stepLabelColor),
         const SizedBox(height: 25),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
