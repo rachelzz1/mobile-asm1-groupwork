@@ -65,7 +65,10 @@ class ExerciseVideoState extends State<ExerciseVideo> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => FitnessHomePage(),
+                                builder: (context) => FitnessHomePage(
+                                  userId: box.read('userId'),
+                                  username: box.read('username'),
+                                ),
                               ),
                             );
                           },

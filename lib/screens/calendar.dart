@@ -7,7 +7,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'profile.dart';
 
 class CalendarPage extends StatefulWidget {
-  const CalendarPage({super.key});
+  final String userId;
+  final String username;
+  //接收用户ID和用户名
+  const CalendarPage({super.key, required this.userId, required this.username});
 
   @override
   State<CalendarPage> createState() => _CalendarPageState();
@@ -48,17 +51,17 @@ class _CalendarPageState extends State<CalendarPage> {
     if (index == 0) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const FitnessHomePage()),
+        MaterialPageRoute(builder: (_) => FitnessHomePage(userId: widget.userId, username: widget.username)),
       );
     } else if (index == 2) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const PKBattleScreen()),
+        MaterialPageRoute(builder: (_) => PKBattleScreen(userId: widget.userId, username: widget.username)),
       );
     } else if (index == 3) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const ProfileScreen()),
+        MaterialPageRoute(builder: (_) => ProfileScreen(userId: widget.userId, username: widget.username)),
       );
     }
   }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'home_page.dart';
@@ -15,7 +16,10 @@ class AppAssets {
 
 // --- Profile 页面（Stateful） ---
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  final String userId;
+  final String username;
+  // 构造函数，接收用户ID和用户名
+  const ProfileScreen({super.key, required this.userId, required this.username});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -26,6 +30,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   static const Color unselectedColor = Colors.grey;
   static const double iconBottomPadding = 4.0;
   static const double labelFontSize = 12.0;
+
+  // PK 属性初始值
+  Map<String, int> _pkAttributes = {
+    "endurance": 0,
+    "burst": 0,
+    "strength": 0,
+    "flexibility": 0,
+  };
 
   void _onItemTapped(int index) {
     if (_selectedIndex == index) return;
@@ -38,19 +50,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
       case 0:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const FitnessHomePage()),
+          MaterialPageRoute(builder: (context) => FitnessHomePage(userId: widget.userId, username: widget.username)),
         );
         break;
       case 1:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const CalendarPage()),
+          MaterialPageRoute(builder: (context) => CalendarPage(userId: widget.userId, username: widget.username)),
         );
         break;
       case 2:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const PKBattleScreen()),
+          MaterialPageRoute(builder: (context) => PKBattleScreen(userId: widget.userId, username: widget.username)),
         );
         break;
       case 3:
@@ -66,6 +78,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
       width: 24,
       height: 24,
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchPkAttributes();
+  }
+
+  Future<void> _fetchPkAttributes() async {
+    final doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.userId)
+        .get();
+    if (doc.exists && doc.data()?['pkAttributes'] != null) {
+      setState(() {
+        _pkAttributes = Map<String, int>.from(doc.data()!['pkAttributes']);
+      });
+    }
   }
 
   @override
@@ -215,8 +245,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Kris',
+            Text(
+              widget.username,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             Icon(Icons.chevron_right, color: Colors.grey.shade400),
@@ -335,14 +365,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Expanded(
                 child: _buildPkCard(
                   Icons.battery_charging_full,
-                  '20',
+                  _pkAttributes['endurance'].toString(),
                   'Endurance',
                   const Color(0xFFFFA726),
                 ),
               ),
               const SizedBox(width: 16),
-              Expanded(child: _buildPkCard(Icons.flash_on, '23', 'Burst', const Color(0xFFFFD600))),
-
+              Expanded(
+                child: _buildPkCard(
+                  Icons.flash_on,
+                  _pkAttributes['burst'].toString(),
+                  'Burst',
+                  const Color(0xFFFFD600),
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 16),
@@ -351,7 +387,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Expanded(
                 child: _buildPkCard(
                   Icons.fitness_center,
-                  '35',
+                  _pkAttributes['strength'].toString(),
                   'Strength',
                   const Color(0xFFFB8C00),
                 ),
@@ -360,7 +396,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Expanded(
                 child: _buildPkCard(
                   Icons.self_improvement,
-                  '45',
+                  _pkAttributes['flexibility'].toString(),
                   'Flexibility',
                   const Color(0xFF42A5F5),
                 ),

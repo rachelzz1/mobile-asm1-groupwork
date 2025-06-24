@@ -6,13 +6,15 @@ import '../config/pk_attribute_data.dart'; // Import AttributeData
 class PKAttributeComparisonContainer extends StatefulWidget {
   final double parentWidth;
   final ValueNotifier<bool> onAllAnimationsComplete;
-  final ValueNotifier<double> progressBarWidthFactor; // To update the progress
+  final ValueNotifier<double> progressBarWidthFactor;
+  final Map<String, int> leftAttributes; // 新增
 
   const PKAttributeComparisonContainer({
     Key? key,
     required this.parentWidth,
     required this.onAllAnimationsComplete,
     required this.progressBarWidthFactor,
+    required this.leftAttributes, // 新增
   }) : super(key: key);
 
   @override
@@ -23,38 +25,7 @@ class PKAttributeComparisonContainer extends StatefulWidget {
 class _PKAttributeComparisonContainerState
     extends State<PKAttributeComparisonContainer>
     with TickerProviderStateMixin {
-  final List<AttributeData> _attributes = [// List of attributes
-    AttributeData(
-      iconPath: 'assets/icons/Endurance.svg',
-      name: "Endurance",
-      leftValue: 25,
-      rightValue: 20,
-    ),
-    AttributeData(
-      iconPath: 'assets/icons/Explosiveness.svg',
-      name: "Explosiveness",
-      leftValue: 22,
-      rightValue: 23,
-    ),
-    AttributeData(
-      iconPath: 'assets/icons/Strength.svg',
-      name: "Strength",
-      leftValue: 40,
-      rightValue: 35,
-    ),
-    AttributeData(
-      iconPath: 'assets/icons/Flexibility.svg',
-      name: "Flexibility",
-      leftValue: 55,
-      rightValue: 45,
-    ),
-    AttributeData(
-      iconPath: '',
-      name: "Total",
-      leftValue: 25 + 22 + 40 + 55,
-      rightValue: 20 + 23 + 35 + 45,
-    ),
-  ];
+  late final List<AttributeData> _attributes;
 
   // Index to track the current attribute being animated
   int _currentAttributeIndex = 0;
@@ -78,9 +49,42 @@ class _PKAttributeComparisonContainerState
     super.initState();
     widget.onAllAnimationsComplete.value = false;
 
-    _totalLeftValue = 0;
-    _totalRightValue = 0;
-   
+    // 用传入的 leftAttributes 构造属性
+    _attributes = [
+      AttributeData(
+        iconPath: 'assets/icons/Endurance.svg',
+        name: "Endurance",
+        leftValue: widget.leftAttributes['endurance'] ?? 0,
+        rightValue: 20,
+      ),
+      AttributeData(
+        iconPath: 'assets/icons/Explosiveness.svg',
+        name: "Burst",
+        leftValue: widget.leftAttributes['burst'] ?? 0,
+        rightValue: 23,
+      ),
+      AttributeData(
+        iconPath: 'assets/icons/Strength.svg',
+        name: "Strength",
+        leftValue: widget.leftAttributes['strength'] ?? 0,
+        rightValue: 35,
+      ),
+      AttributeData(
+        iconPath: 'assets/icons/Flexibility.svg',
+        name: "Flexibility",
+        leftValue: widget.leftAttributes['flexibility'] ?? 0,
+        rightValue: 45,
+      ),
+      AttributeData(
+        iconPath: '',
+        name: "Total",
+        leftValue: (widget.leftAttributes['endurance'] ?? 0) +
+            (widget.leftAttributes['burst'] ?? 0) +
+            (widget.leftAttributes['strength'] ?? 0) +
+            (widget.leftAttributes['flexibility'] ?? 0),
+        rightValue: 20 + 23 + 35 + 45,
+      ),
+    ];
 
     _controllers.forEach((controller) => controller.dispose());
     _controllers = [];

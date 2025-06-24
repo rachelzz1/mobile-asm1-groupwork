@@ -64,13 +64,17 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pop(context);
 
       if (querySnapshot.docs.isNotEmpty) {
-        if (mounted) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => const FitnessHomePage()),
-            (route) => false,
-          );
-        }
+        final userDoc = querySnapshot.docs.first;
+        final userId = userDoc.id; // Firestore 文档ID
+        final username = userDoc['username'] ?? '';
+        // 跳转时传递 userId 和 username
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => FitnessHomePage(userId: userId, username: username),
+          ),
+          (route) => false,
+        );
       } else {
         setState(() {
           _errorMessage = 'Incorrect email or password.';
