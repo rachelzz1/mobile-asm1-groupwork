@@ -1,6 +1,7 @@
 // lib/pk_battle_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // 顶部引入
 
 import '../widgets/pk_progress_bar.dart';
 import '../widgets/pk_attribute_comparison.dart';
@@ -10,7 +11,10 @@ import '../screens/calendar.dart';
 import 'profile.dart';
 
 class PKBattleScreen extends StatefulWidget {
-  const PKBattleScreen({Key? key}) : super(key: key);
+  final String userId;
+  final String username;
+  //接收ID和用户名
+  const PKBattleScreen({Key? key, required this.userId, required this.username}) : super(key: key);
 
   @override
   State<PKBattleScreen> createState() => _PKBattleScreenState();
@@ -32,9 +36,17 @@ class _PKBattleScreenState extends State<PKBattleScreen>
   String _winnerText = "";
   String _winnerAvatarPath = "";
 
+  Map<String, int> _pkAttributes = {
+    "endurance": 0,
+    "burst": 0,
+    "strength": 0,
+    "flexibility": 0,
+  };
+
   @override
   void initState() {
     super.initState();
+    _fetchPkAttributes(); // 新增
     _progressBarWidthFactor.value = 0.0;
     _panelAnimationController = AnimationController(
       duration: const Duration(milliseconds: 400),
@@ -44,6 +56,23 @@ class _PKBattleScreenState extends State<PKBattleScreen>
     _showResultPanel = false;
     _winnerText = "";
     _winnerAvatarPath = "";
+  }
+// 从 Firestore 获取 PK 属性
+  Future<Map<String, int>> _fetchPkAttributes() async {
+    final doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.userId)
+        .get();
+    if (doc.exists && doc.data()?['pkAttributes'] != null) {
+      return Map<String, int>.from(doc.data()!['pkAttributes']);
+    }
+    // 返回默认值
+    return {
+      "endurance": 0,
+      "burst": 0,
+      "strength": 0,
+      "flexibility": 0,
+    };
   }
 
   void _handleAllAnimationsDone() {
@@ -95,7 +124,12 @@ class _PKBattleScreenState extends State<PKBattleScreen>
         if (mounted) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const PKBattleScreen()),
+            MaterialPageRoute(
+              builder: (context) => PKBattleScreen(
+                userId: widget.userId,
+                username: widget.username,
+              ),
+            ),
           );
         }
       },
@@ -140,18 +174,31 @@ class _PKBattleScreenState extends State<PKBattleScreen>
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const FitnessHomePage(),
+                  builder: (context) => FitnessHomePage(
+                    userId: widget.userId,
+                    username: widget.username,
+                  ),
                 ),
               );
             } else if (index == 1) {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const CalendarPage()),
+                MaterialPageRoute(
+                  builder: (context) => CalendarPage(
+                    userId: widget.userId,
+                    username: widget.username,
+                  ),
+                ),
               );
             } else {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                MaterialPageRoute(
+                  builder: (context) => ProfileScreen(
+                  userId: widget.userId,
+                  username: widget.username,
+                  ),
+                ),
               );
               if (index == 2 && _currentIndex != 2) {}
             }
@@ -268,7 +315,7 @@ class _PKBattleScreenState extends State<PKBattleScreen>
                             _buildPlayerColumn(
                               context,
                               'assets/images/girl.png',
-                              'You',
+                              widget.username, // 用当前登录用户名
                               avatarSize,
                               counterFontSize,
                             ),
@@ -298,11 +345,22 @@ class _PKBattleScreenState extends State<PKBattleScreen>
                           progressBarWidthFactor: _progressBarWidthFactor,
                         ),
                         SizedBox(height: attributeContainerMargin),
-                        PKAttributeComparisonContainer(
-                          parentWidth: maxWidth,
-                          onAllAnimationsComplete:
-                              _allAttributeAnimationsDoneNotifier,
-                          progressBarWidthFactor: _progressBarWidthFactor,
+                        FutureBuilder<Map<String, int>>(
+                          future: _fetchPkAttributes(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return const Center(child: CircularProgressIndicator());
+                            }
+                            final pkAttributes = snapshot.data!;
+                            // 渲染 PKAttributeComparisonContainer
+                            return PKAttributeComparisonContainer(
+                              parentWidth: maxWidth,
+                              onAllAnimationsComplete:
+                                  _allAttributeAnimationsDoneNotifier,
+                              progressBarWidthFactor: _progressBarWidthFactor,
+                              leftAttributes: pkAttributes,
+                            );
+                          },
                         ),
                         SizedBox(height: maxHeight * 0.12),
                       ],
