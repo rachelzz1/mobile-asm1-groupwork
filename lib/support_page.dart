@@ -31,7 +31,10 @@ class _SupportPageState extends State<SupportPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const SettingsPage(),
+                builder: (context) => SettingsPage(
+                  userId: 'yourUserId', // Replace with actual userId
+                  username: 'Kris',    // Replace with actual username
+                ),
               ), // <--- NEW NAVIGATION TO SupportPage
             );
           },

@@ -137,7 +137,10 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const SettingsPage(),
+                  builder: (context) => SettingsPage(
+                    userId: 'yourUserId', // Replace with actual userId
+                    username: userName,
+                  ),
                 ), // <--- NEW NAVIGATION TO AppearancePage
               );
             },

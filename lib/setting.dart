@@ -7,10 +7,18 @@ import 'notifications_page.dart';
 import 'appearance_page.dart';
 import 'support_page.dart';
 import 'widgets/profile_drawer.dart';
+import '/screens/home_page.dart'; // Updated to use a relative path
 
 // SettingsPage is the main settings page of the application
 class SettingsPage extends StatelessWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  final String userId;
+  final String username;
+
+  const SettingsPage({
+    Key? key,
+    required this.userId,
+    required this.username,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +36,11 @@ class SettingsPage extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const ProfileDrawer(),
-              ), // <--- NEW NAVIGATION TO SupportPage
+                builder: (context) => FitnessHomePage(
+                  userId: userId, // 使用传入的userId
+                  username: username, // 使用传入的username
+                ),
+              ),
             );
           },
         ),
@@ -256,8 +267,10 @@ class MyApp extends StatelessWidget {
             VisualDensity
                 .adaptivePlatformDensity, // Adapts the visual density to the platform
       ),
-      home:
-          const SettingsPage(), // Sets SettingsPage as the starting page of the application
+      home: SettingsPage(
+        userId: 'yourUserId', // 这里可以替换为实际的userId
+        username: 'yourUsername', // 这里可以替换为实际的username
+      ),
     );
   }
 }
