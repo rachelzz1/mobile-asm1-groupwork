@@ -244,33 +244,4 @@ class SettingsPage extends StatelessWidget {
   }
 }
 
-// main function is the entry point of the Flutter application
-void main() {
-  runApp(const MyApp()); // Runs the MyApp widget
-}
 
-// MyApp is the root widget of the application
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // MaterialApp is a convenient widget that wraps many widgets needed for Material Design apps
-    return MaterialApp(
-      title:
-          'Settings Demo', // Application title, displayed in the task switcher
-      theme: ThemeData(
-        primarySwatch:
-            Colors
-                .blue, // Defines the overall primary color swatch for the application
-        visualDensity:
-            VisualDensity
-                .adaptivePlatformDensity, // Adapts the visual density to the platform
-      ),
-      home: SettingsPage(
-        userId: 'yourUserId', // 这里可以替换为实际的userId
-        username: 'yourUsername', // 这里可以替换为实际的username
-      ),
-    );
-  }
-}

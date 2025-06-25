@@ -43,6 +43,7 @@ dependencies:
   font_awesome_flutter: ^10.8.0
   firebase_core: ^3.14.0
   cloud_firestore: ^5.6.9
+  audioplayers: ^6.5.0
 
 dev_dependencies:
   flutter_test:
@@ -88,6 +89,10 @@ flutter:
   - assets/videos/ex4.mp4
   - assets/videos/ex5.mp4
   - assets/videos/ex6.mp4
+  - assets/audios/win.wav
+  - assets/audios/lose.wav
+  - assets/audios/level-win.mp3
+
   - assets/images/yoga.png
   - assets/images/good.png
   - assets/images/stars.png
