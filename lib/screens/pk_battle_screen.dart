@@ -324,7 +324,7 @@ class _PKBattleScreenState extends State<PKBattleScreen>
                             _buildPlayerColumn(
                               context,
                               'assets/images/girl.png',
-                              widget.username, // 用当前登录用户名
+                              'You', 
                               avatarSize,
                               counterFontSize,
                             ),
