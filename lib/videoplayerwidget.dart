@@ -63,15 +63,72 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   }
 }
 
-class VideoPlayerPage extends StatelessWidget {
+class VideoPlayerPage extends StatefulWidget {
   final String videoUrl;
   const VideoPlayerPage({Key? key, required this.videoUrl}) : super(key: key);
+
+  @override
+  State<VideoPlayerPage> createState() => _VideoPlayerPageState();
+}
+
+class _VideoPlayerPageState extends State<VideoPlayerPage> {
+  late VideoPlayerController _controller;
+  bool isMuted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.asset(widget.videoUrl)
+      ..initialize().then((_) {
+        setState(() {});
+        _controller.setVolume(1.0);
+        _controller.setLooping(true);
+        _controller.play();
+      });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void toggleMute() {
+    setState(() {
+      isMuted = !isMuted;
+      _controller.setVolume(isMuted ? 0.0 : 1.0);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("video player")),
-      body: Center(child: VideoPlayerWidget(videoUrl: videoUrl)),
+      body: Stack(
+        children: [
+          Center(
+            child: AspectRatio(
+              aspectRatio:
+                  _controller.value.isInitialized
+                      ? _controller.value.aspectRatio
+                      : 16 / 9,
+              child: VideoPlayer(_controller),
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: FloatingActionButton(
+              backgroundColor: Colors.black87,
+              onPressed: toggleMute,
+              child: Icon(
+                isMuted ? Icons.volume_off : Icons.volume_up,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
