@@ -62,15 +62,7 @@ class ExerciseVideoState extends State<ExerciseVideo> {
                         //Back button
                         InkWell(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => FitnessHomePage(
-                                  userId: box.read('userId'),
-                                  username: box.read('username'),
-                                ),
-                              ),
-                            );
+                            Navigator.pop(context);
                           },
                           child: Container(
                             margin: const EdgeInsets.only(
@@ -733,3 +725,4 @@ class ExercisePartCard extends StatelessWidget {
     );
   }
 }
+
