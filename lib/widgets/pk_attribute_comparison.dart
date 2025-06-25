@@ -1,6 +1,7 @@
 // lib/widgets/pk_attribute_comparison.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:audioplayers/audioplayers.dart';
 import '../config/pk_attribute_data.dart'; // Import AttributeData
 
 class PKAttributeComparisonContainer extends StatefulWidget {
@@ -43,6 +44,8 @@ class _PKAttributeComparisonContainerState
   // List to track the total left and right values for the progress bar
   int _totalLeftValue = 0;
   int _totalRightValue = 0;
+
+  final AudioPlayer _audioPlayer = AudioPlayer();
 
   @override
   void initState() {
@@ -113,9 +116,18 @@ class _PKAttributeComparisonContainerState
     _startNextAnimation();
   }
 
-  void _startNextAnimation() {
+  @override
+  void dispose() {
+    for (var controller in _controllers) {
+      controller.dispose();
+    }
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+  void _startNextAnimation() async {
     if (_currentAttributeIndex < _attributes.length) {
-      _controllers[_currentAttributeIndex].forward().then((_) {
+      _controllers[_currentAttributeIndex].forward().then((_) async {
         if (mounted) {
           setState(() {
             _animationCompleted[_currentAttributeIndex] = true;
@@ -129,6 +141,17 @@ class _PKAttributeComparisonContainerState
               widget.progressBarWidthFactor.value = 0.0;
             }
           });
+
+          // 播放音效（只对前4项属性，最后一项Total不播放）
+          if (_currentAttributeIndex < 4) {
+            final left = _attributes[_currentAttributeIndex].leftValue;
+            final right = _attributes[_currentAttributeIndex].rightValue;
+            if (left > right) {
+              await _audioPlayer.play(AssetSource('audios/win.wav'));
+            } else if (left < right) {
+              await _audioPlayer.play(AssetSource('audios/lose.wav'));
+            }
+          }
 
           if (_currentAttributeIndex == _attributes.length - 1) {
             widget.onAllAnimationsComplete.value = true;
@@ -145,14 +168,6 @@ class _PKAttributeComparisonContainerState
         }
       });
     }
-  }
-
-  @override
-  void dispose() {
-    for (var controller in _controllers) {
-      controller.dispose();
-    }
-    super.dispose();
   }
 
   @override
