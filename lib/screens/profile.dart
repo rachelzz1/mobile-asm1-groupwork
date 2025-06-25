@@ -286,11 +286,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildStatColumn('3', 'Training\n(days)'),
+            _buildStatColumn('60', 'Training\n(days)'),
             const VerticalDivider(thickness: 1, color: Color(0xFFE0E0E0)),
-            _buildStatColumn('45', 'Total time\n(minutes)'),
+            _buildStatColumn('1.1K', 'Total time\n(minutes)'),
             const VerticalDivider(thickness: 1, color: Color(0xFFE0E0E0)),
-            _buildStatColumn('356', 'Consumption\n(kcal)'),
+            _buildStatColumn('7K', 'Consumption\n(kcal)'),
           ],
         ),
       ),
