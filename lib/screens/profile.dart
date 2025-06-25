@@ -5,6 +5,7 @@ import 'home_page.dart';
 import 'pk_battle_screen.dart';
 import 'calendar.dart';
 import 'welcome_screen.dart';
+import 'user_details_screen.dart';
 
 // --- 图标资源路径管理类 ---
 class AppAssets {
@@ -239,75 +240,95 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildUserInfo() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              widget.username,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      // 👇 使用 InkWell 将 Row 包裹起来，使其可点击
+      InkWell(
+        // 设置一个圆形的点击波纹效果
+        borderRadius: BorderRadius.circular(30),
+        onTap: () {
+          // 👇 点击时执行页面跳转
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const UserDetailsScreen(),
             ),
-            Icon(Icons.chevron_right, color: Colors.grey.shade400),
-          ],
-        ),
-        const SizedBox(height: 4),
-        Text(
-          '@83276936 ・ Joined in June 2025',
-          style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
-        ),
-        const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: const Color(0xFFFDE08A),
-                borderRadius: BorderRadius.circular(20),
+          );
+        },
+        child: Padding(
+          // 添加一些内边距，让点击区域更舒适
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min, // 让 Row 的宽度自适应内容
+            children: [
+              Text(
+                widget.username,
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              child: RichText(
-                text: TextSpan(
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black87,
-                    fontFamily: 'sans-serif',
-                  ),
-                  children: const [
-                    TextSpan(
-                      text: '51 ',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    TextSpan(text: 'Following  '),
-                    TextSpan(
-                      text: '39 ',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    TextSpan(text: 'Followers'),
-                  ],
+              // 这个图标现在是可点击区域的一部分
+              Icon(Icons.chevron_right, color: Colors.grey.shade400),
+            ],
+          ),
+        ),
+      ),
+      const SizedBox(height: 4),
+      Text(
+        '@83276936 ・ Joined in June 2025',
+        style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+      ),
+      const SizedBox(height: 16),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFDE08A),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: RichText(
+              text: TextSpan(
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.black87,
+                  fontFamily: 'sans-serif',
                 ),
+                children: const [
+                  TextSpan(
+                    text: '51 ',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(text: 'Following  '),
+                  TextSpan(
+                    text: '39 ',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(text: 'Followers'),
+                ],
               ),
             ),
-            const SizedBox(width: 12),
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: const Color(0xFFEBF4FC),
-                border: Border.all(color: const Color(0xFFD2E6F8), width: 1.5),
-              ),
-              child: Icon(
-                Icons.person_add_alt_1_outlined,
-                color: Colors.blue.shade700,
-                size: 20,
-              ),
+          ),
+          const SizedBox(width: 12),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: const Color(0xFFEBF4FC),
+              border: Border.all(color: const Color(0xFFD2E6F8), width: 1.5),
             ),
-          ],
-        ),
-      ],
-    );
-  }
+            child: Icon(
+              Icons.person_add_alt_1_outlined,
+              color: Colors.blue.shade700,
+              size: 20,
+            ),
+          ),
+        ],
+      ),
+    ],
+  );
+}
 
   Widget _buildOverallStats() {
     return Padding(
