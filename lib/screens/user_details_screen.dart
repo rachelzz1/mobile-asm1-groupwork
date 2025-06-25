@@ -40,7 +40,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
     final doc = await FirebaseFirestore.instance.collection('users').doc(widget.userId).get();
     final data = doc.data() ?? {};
     setState(() {
-      nameController.text = data['name'] ?? '';
+      nameController.text = data['username'] ?? ''; // 修改为 username
       genderController.text = data['gender'] ?? '';
       heightController.text = data['height']?.toString() ?? '';
       weightController.text = data['weight']?.toString() ?? '';
@@ -53,7 +53,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
 
   Future<void> _saveUserData() async {
     await FirebaseFirestore.instance.collection('users').doc(widget.userId).update({
-      'name': nameController.text,
+      'username': nameController.text, // 修改为 username
       'gender': genderController.text,
       'height': heightController.text,
       'weight': weightController.text,
