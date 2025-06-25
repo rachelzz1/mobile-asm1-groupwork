@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'answer_page.dart'; // Ensure this import is present
 import 'contact.dart';
 import 'guidance_screen.dart';
+import 'setting.dart';
 
 class SupportPage extends StatefulWidget {
   const SupportPage({Key? key}) : super(key: key);
@@ -27,7 +28,12 @@ class _SupportPageState extends State<SupportPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SettingsPage(),
+              ), // <--- NEW NAVIGATION TO SupportPage
+            );
           },
         ),
         title: const Text('Support', style: TextStyle(color: Colors.black)),

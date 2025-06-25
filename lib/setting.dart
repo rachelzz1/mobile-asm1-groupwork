@@ -1,3 +1,4 @@
+// setting.dart
 // setting
 import 'package:flutter/material.dart';
 import 'account_Security_page.dart'; // Updated to use a relative path
@@ -5,6 +6,7 @@ import 'language_page.dart';
 import 'notifications_page.dart';
 import 'appearance_page.dart';
 import 'support_page.dart';
+import 'widgets/profile_drawer.dart';
 
 // SettingsPage is the main settings page of the application
 class SettingsPage extends StatelessWidget {
@@ -23,9 +25,12 @@ class SettingsPage extends StatelessWidget {
             color: Colors.black, // Icon color set to black
           ),
           onPressed: () {
-            // Navigator.of(context).pop() is used to pop the top route from the current navigation stack,
-            // effectively navigating back to the previous page.
-            Navigator.of(context).pop();
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ProfileDrawer(),
+              ), // <--- NEW NAVIGATION TO SupportPage
+            );
           },
         ),
         // title is the primary content of the AppBar, usually the page title
