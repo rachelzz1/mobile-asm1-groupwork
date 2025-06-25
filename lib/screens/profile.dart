@@ -284,7 +284,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       text: '39 ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    TextSpan(text: 'Following'),
+                    TextSpan(text: 'Followers'),
                   ],
                 ),
               ),
