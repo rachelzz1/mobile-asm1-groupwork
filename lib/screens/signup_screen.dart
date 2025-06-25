@@ -80,21 +80,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
         return; // 提前退出函数
       }
 
-      // 邮箱不存在，创建新用户
-      await FirebaseFirestore.instance.collection('users').add({
+      // 注册时添加用户
+      final docRef = await FirebaseFirestore.instance.collection('users').add({
         'username': _usernameController.text.trim(),
         'email': _emailController.text.trim(),
         'password': _passwordController.text.trim(),
         'createdAt': Timestamp.now(),
+        'pkAttributes': {
+          'endurance': 0,
+          'burst': 0,
+          'strength': 0,
+          'flexibility': 0,
+        }
       });
-      
+      final userId = docRef.id; // Firestore 自动生成的 userId
+
       Navigator.pop(context); // 关闭加载动画
 
-      // 注册成功，跳转到主页
+      // 注册成功，跳转主页并传递 userId
       if (mounted) {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const FitnessHomePage()),
+          MaterialPageRoute(
+            builder: (context) => FitnessHomePage(
+              userId: userId,
+              username: _usernameController.text.trim(),
+            ),
+          ),
           (route) => false,
         );
       }

@@ -9,8 +9,10 @@ import '../screens/calendar.dart';
 import '../screens/profile.dart';
 
 class FitnessHomePage extends StatefulWidget {
-  
-  const FitnessHomePage({super.key});
+  final String userId;
+  final String username;
+  //接受用户ID和用户名作为参数
+  const FitnessHomePage({super.key, required this.userId, required this.username});
 
   @override
   State<FitnessHomePage> createState() => _FitnessHomePageState();
@@ -54,7 +56,7 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (context) => const FitnessHomePage(),
+              builder: (context) => FitnessHomePage(userId: widget.userId, username: widget.username),
             ), // Go to home
             (Route<dynamic> route) => false, // Remove all previous routes
           );
@@ -63,20 +65,35 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
       case 1: // Calendar
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const CalendarPage()),
+          MaterialPageRoute(
+            builder: (context) => CalendarPage(
+              userId: widget.userId,
+              username: widget.username,
+            ),
+          ),
         );
         break;
       case 2: // PK
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const PKBattleScreen()),
+          MaterialPageRoute(
+            builder: (context) => PKBattleScreen(
+              userId: widget.userId,
+              username: widget.username,
+            ),
+          ),
         );
         break;
       case 3: // Profile
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ProfileScreen()),
-      );
+          MaterialPageRoute(
+            builder: (context) => ProfileScreen(
+              userId: widget.userId,
+              username: widget.username,
+            ),
+          ),
+        );
         break;
     }
   }
@@ -84,6 +101,8 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
   @override
   void initState() {
     super.initState();
+    // 打印用户名，便于调试
+    debugPrint('HomePage received username: ${widget.username}');
     _searchFocusNode.addListener(_onSearchFocusChange);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) _updateSuggestionsPosition();
@@ -276,12 +295,12 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Hi Kris',
+                              'Hi ${widget.username}',
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
