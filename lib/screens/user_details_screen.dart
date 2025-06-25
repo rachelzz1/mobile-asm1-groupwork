@@ -9,16 +9,14 @@ class UserDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // 添加一个返回按钮的 AppBar
       appBar: AppBar(
         title: const Text('User Details'),
         backgroundColor: Colors.white,
-        foregroundColor: Colors.black, // 让返回箭头和标题是黑色
-        elevation: 0, // 去掉阴影
+        foregroundColor: Colors.black,
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
-        // 使用 ListView 防止内容超出一屏时无法滚动
         child: ListView(
           children: [
             _buildDetailItem('Name', 'Kris'),
@@ -32,7 +30,7 @@ class UserDetailsScreen extends StatelessWidget {
     );
   }
 
-  // 一个辅助 Widget，用于创建统一风格的列表项，使代码更整洁
+  // 👇👇👇 修改发生在这里 👇👇👇
   Widget _buildDetailItem(String label, String value) {
     return Card(
       elevation: 0,
@@ -45,9 +43,12 @@ class UserDetailsScreen extends StatelessWidget {
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         title: Text(
           label,
+          // ✅ 这是我们修改后的样式
           style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.grey.shade600,
+            fontWeight: FontWeight.w600,
+            color: Colors.blue.shade700, // 使用主题蓝色
+            fontSize: 15,                 // 增大了字号
+            letterSpacing: 0.5,           // 增加了字母间距
           ),
         ),
         subtitle: Padding(
