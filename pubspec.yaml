@@ -92,6 +92,7 @@ flutter:
   - assets/audios/win.wav
   - assets/audios/lose.wav
   - assets/audios/level-win.mp3
+  - assets/audios/losing-horn.mp3
 
   - assets/images/yoga.png
   - assets/images/good.png

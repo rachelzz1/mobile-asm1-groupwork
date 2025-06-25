@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // 顶部引入
+import 'package:audioplayers/audioplayers.dart';
 
 import '../widgets/pk_progress_bar.dart';
 import '../widgets/pk_attribute_comparison.dart';
@@ -35,6 +36,8 @@ class _PKBattleScreenState extends State<PKBattleScreen>
   bool _showResultPanel = false;
   String _winnerText = "";
   String _winnerAvatarPath = "";
+
+  final AudioPlayer _resultAudioPlayer = AudioPlayer(); // 新增
 
   Map<String, int> _pkAttributes = {
     "endurance": 0,
@@ -75,18 +78,23 @@ class _PKBattleScreenState extends State<PKBattleScreen>
     };
   }
 
-  void _handleAllAnimationsDone() {
+  void _handleAllAnimationsDone() async {
     if (_allAttributeAnimationsDoneNotifier.value) {
       final double progress = _progressBarWidthFactor.value;
       if (progress > 0.5001) {
         _winnerText = "You Win!";
         _winnerAvatarPath = 'assets/images/girl.png';
+        // 播放胜利音效
+        await _resultAudioPlayer.play(AssetSource('audios/level-win.mp3'));
       } else if (progress < 0.4999) {
-        _winnerText = "Kris Wins!";
+        _winnerText = "Oliver Wins!";
         _winnerAvatarPath = 'assets/images/boy.png';
+        // 播放失败音效
+        await _resultAudioPlayer.play(AssetSource('audios/losing-horn.mp3'));
       } else {
         _winnerText = "It's a Tie!";
         _winnerAvatarPath = '';
+        // 平局不播放音效
       }
 
 
@@ -149,6 +157,7 @@ class _PKBattleScreenState extends State<PKBattleScreen>
     _allAttributeAnimationsDoneNotifier.dispose();
     _panelAnimationController.dispose();
     _progressBarWidthFactor.dispose();
+    _resultAudioPlayer.dispose(); // 新增
     super.dispose();
   }
 
@@ -333,7 +342,7 @@ class _PKBattleScreenState extends State<PKBattleScreen>
                             _buildPlayerColumn(
                               context,
                               'assets/images/boy.png',
-                              'Kris',
+                              'Oliver',
                               avatarSize,
                               counterFontSize,
                             ),
