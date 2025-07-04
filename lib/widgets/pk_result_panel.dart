@@ -2,12 +2,12 @@
 import 'package:flutter/material.dart';
 
 class PKResultPanel extends StatelessWidget {
-  final String winnerText;
-  final String winnerAvatarPath;
-  final double maxWidth; // Use this for responsive sizing within the panel
-  final VoidCallback onClose;
-  final VoidCallback onRematch;
-  final VoidCallback onViewStats;
+  final String winnerText;         // 胜负文字
+  final String winnerAvatarPath;   // 胜者头像图片路径
+  final double maxWidth;           // 用于自适应布局的最大宽度
+  final VoidCallback onClose;      // 关闭弹窗回调
+  final VoidCallback onRematch;    // 再来一局回调
+  final VoidCallback onViewStats;  // 查看数据回调
 
   const PKResultPanel({
     Key? key,
@@ -21,8 +21,8 @@ class PKResultPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final panelWidth = maxWidth * 0.85;
-    final panelAvatarSize = panelWidth * 0.4; 
+    final panelWidth = maxWidth * 0.85; // 弹窗宽度
+    final panelAvatarSize = panelWidth * 0.4; // 头像尺寸
     final buttonFontSize = panelWidth * 0.05;
     final titleFontSize = panelWidth * 0.09;
 
@@ -30,8 +30,8 @@ class PKResultPanel extends StatelessWidget {
     final crownWidth = baseCrownDimension * 1.4;
     final crownHeight = baseCrownDimension * 0.8;
 
-    bool isTie = winnerText == "It's a Tie!";
-    bool showAvatarAndCrown = winnerAvatarPath.isNotEmpty && !isTie;
+    bool isTie = winnerText == "It's a Tie!"; // 是否平局
+    bool showAvatarAndCrown = winnerAvatarPath.isNotEmpty && !isTie; // 是否显示头像和皇冠
 
     return Center(
       child: Material(
@@ -53,6 +53,7 @@ class PKResultPanel extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              // 右上角关闭按钮
               Align(
                 alignment: Alignment.topRight,
                 child: IconButton(
@@ -63,6 +64,7 @@ class PKResultPanel extends StatelessWidget {
                   onPressed: onClose,
                 ),
               ),
+              // 头像、皇冠或平局表情
               Stack(
                 alignment: Alignment.topCenter,
                 children: [
@@ -70,12 +72,14 @@ class PKResultPanel extends StatelessWidget {
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        // 皇冠图片
                         Image.asset(
                           'assets/images/crown.png',
                           width: crownWidth,
                           height: crownHeight,
                           fit: BoxFit.fill,
                         ),
+                        // 胜者头像
                         CircleAvatar(
                           radius: panelAvatarSize / 2,
                           backgroundColor: Colors.grey[200],
@@ -95,6 +99,7 @@ class PKResultPanel extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
+              // 胜负文字
               Text(
                 winnerText,
                 style: TextStyle(
@@ -105,9 +110,11 @@ class PKResultPanel extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
+              // 操作按钮区
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
+                  // 再来一局按钮
                   Flexible(
                     child: ElevatedButton.icon(
                       onPressed: onRematch,
@@ -133,6 +140,7 @@ class PKResultPanel extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 10),
+                  // 查看数据按钮
                   Flexible(
                     child: ElevatedButton.icon(
                       onPressed: onViewStats,
@@ -140,7 +148,6 @@ class PKResultPanel extends StatelessWidget {
                         Icons.bar_chart,
                         color: Color(0xFF000000),
                       ),
-                     
                       label: FittedBox(
                         fit: BoxFit.scaleDown, 
                         child: Text(

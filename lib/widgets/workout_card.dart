@@ -10,7 +10,9 @@ class WorkoutCard extends StatelessWidget {
   final String? backgroundImagePath;
   final Color backgroundColor;
   final double characterImageHeight;
-  final String workoutIdentifier; // Used Only for the switch statement logic
+  final String workoutIdentifier; // 用于路由判断
+  final String userId; // 新增：接收用户ID
+  final String username; // 新增：接收用户名
 
   const WorkoutCard({
     super.key,
@@ -22,6 +24,8 @@ class WorkoutCard extends StatelessWidget {
     required this.backgroundColor,
     this.characterImageHeight = 80,
     required this.workoutIdentifier,
+    required this.userId, // 新增
+    required this.username, // 新增
   });
 
   Widget _buildKcalIcon() {
@@ -47,42 +51,48 @@ class WorkoutCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         String cleanTitle = title.replaceAll("\n", " ");
-        print(
-          'WorkoutCard tapped: $cleanTitle (ID for routing: $workoutIdentifier)',
-        );
+        // debugPrint(
+        //   'WorkoutCard tapped: $cleanTitle (ID for routing: $workoutIdentifier)',
+        // );
 
         Widget? targetPage;
 
-        // Navigate to different, parameter-less pages based on workoutIdentifier
+        // 根据workoutIdentifier跳转不同页面，并传递userId和username
         switch (workoutIdentifier) {
-          case "slim_belly_yoga": // ID for "Sour and Refreshing Slim Belly"
-            targetPage = const ExerciseVideo();
+          case "slim_belly_yoga":
+            targetPage = ExerciseVideo(
+              userId: userId, // 传递实际userId
+              username: username, // 传递实际username
+            );
             break;
           case "boom_burpee_burn":
-            //targetPage = const BurpeeDetailPage();
+            // targetPage = BurpeeDetailPage(userId: userId, username: username);
             break;
           case "groovy_dance_fit":
-          //targetPage = const DanceFitDetailPage();
+            // targetPage = DanceFitDetailPage(userId: userId, username: username);
+            break;
           case "plank_challenge":
-            //targetPage = const PlankWorkoutDetailPage();
+            // targetPage = PlankWorkoutDetailPage(userId: userId, username: username);
             break;
           default:
-            print(
-              "Warning: No specific page defined for workout ID '$workoutIdentifier'.",
-            );
+            // debugPrint(
+            //   "Warning: No specific page defined for workout ID '$workoutIdentifier'.",
+            // );
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('No page available for "$cleanTitle" yet.'),
                 duration: const Duration(seconds: 2),
               ),
             );
-            return; // Exit if no target page is set
+            return;
         }
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => targetPage!),
-        );
+        if (targetPage != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => targetPage!),
+          );
+        }
       },
       borderRadius: BorderRadius.circular(20),
       child: Container(

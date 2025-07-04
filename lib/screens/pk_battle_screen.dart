@@ -1,20 +1,21 @@
-// lib/pk_battle_screen.dart
+// PKBattleScreen：PK对战主界面，包含属性对比动画、进度条、结果弹窗和底部导航
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // 顶部引入
+import 'package:cloud_firestore/cloud_firestore.dart'; // 引入Firestore用于获取用户属性
 import 'package:audioplayers/audioplayers.dart';
 
-import '../widgets/pk_progress_bar.dart';
-import '../widgets/pk_attribute_comparison.dart';
-import '../widgets/pk_result_panel.dart';
+import '../widgets/pk_progress_bar.dart';           // 进度条组件
+import '../widgets/pk_attribute_comparison.dart';   // 属性对比动画组件
+import '../widgets/pk_result_panel.dart';           // 结果弹窗组件
 import 'home_page.dart';
 import '../screens/calendar.dart';
 import 'profile.dart';
 
 class PKBattleScreen extends StatefulWidget {
-  final String userId;
-  final String username;
-  //接收ID和用户名
+  final String userId;      
+  final String username;    
+  // 构造函数，接收ID和用户名
   const PKBattleScreen({Key? key, required this.userId, required this.username}) : super(key: key);
 
   @override
@@ -25,20 +26,21 @@ class _PKBattleScreenState extends State<PKBattleScreen>
     with TickerProviderStateMixin {
   static const Color themeOrange = Color(0xFFFFBA3A);
 
-  int _currentIndex = 2;
-  late AnimationController _panelAnimationController;
+  int _currentIndex = 2; // 当前底部导航索引，2为PK
+  late AnimationController _panelAnimationController; // 结果弹窗动画控制器
   final ValueNotifier<bool> _allAttributeAnimationsDoneNotifier = ValueNotifier(
     false,
-  );
+  ); // 属性动画完成通知
   final ValueNotifier<double> _progressBarWidthFactor = ValueNotifier<double>(
     0.0,
-  );
-  bool _showResultPanel = false;
-  String _winnerText = "";
-  String _winnerAvatarPath = "";
+  ); // 进度条宽度（胜率）
+  bool _showResultPanel = false; // 是否显示结果弹窗
+  String _winnerText = "";       // 胜负文字
+  String _winnerAvatarPath = ""; // 胜者头像路径
 
-  final AudioPlayer _resultAudioPlayer = AudioPlayer(); // 新增
+  final AudioPlayer _resultAudioPlayer = AudioPlayer(); 
 
+  // 当前用户PK属性（默认值）
   Map<String, int> _pkAttributes = {
     "endurance": 0,
     "burst": 0,
@@ -49,18 +51,19 @@ class _PKBattleScreenState extends State<PKBattleScreen>
   @override
   void initState() {
     super.initState();
-    _fetchPkAttributes(); // 新增
+    _fetchPkAttributes(); // 获取当前用户PK属性
     _progressBarWidthFactor.value = 0.0;
     _panelAnimationController = AnimationController(
       duration: const Duration(milliseconds: 400),
       vsync: this,
     );
-    _allAttributeAnimationsDoneNotifier.addListener(_handleAllAnimationsDone);
+    _allAttributeAnimationsDoneNotifier.addListener(_handleAllAnimationsDone); // 监听动画完成
     _showResultPanel = false;
     _winnerText = "";
     _winnerAvatarPath = "";
   }
-// 从 Firestore 获取 PK 属性
+
+  // 从 Firestore 获取当前用户的PK属性
   Future<Map<String, int>> _fetchPkAttributes() async {
     final doc = await FirebaseFirestore.instance
         .collection('users')
@@ -69,7 +72,7 @@ class _PKBattleScreenState extends State<PKBattleScreen>
     if (doc.exists && doc.data()?['pkAttributes'] != null) {
       return Map<String, int>.from(doc.data()!['pkAttributes']);
     }
-    // 返回默认值
+    // 若无数据，返回默认值
     return {
       "endurance": 0,
       "burst": 0,
@@ -78,28 +81,28 @@ class _PKBattleScreenState extends State<PKBattleScreen>
     };
   }
 
+  // 属性动画全部完成后，判断胜负并弹窗
   void _handleAllAnimationsDone() async {
     if (_allAttributeAnimationsDoneNotifier.value) {
       final double progress = _progressBarWidthFactor.value;
       if (progress > 0.5001) {
-        _winnerText = "You Win!";
+        _winnerText = "You Win!"; 
         _winnerAvatarPath = 'assets/images/girl.png';
         // 播放胜利音效
         await _resultAudioPlayer.play(AssetSource('audios/level-win.mp3'));
       } else if (progress < 0.4999) {
-        _winnerText = "Oliver Wins!";
+        _winnerText = "Oliver Wins!"; 
         _winnerAvatarPath = 'assets/images/boy.png';
         // 播放失败音效
         await _resultAudioPlayer.play(AssetSource('audios/losing-horn.mp3'));
       } else {
-        _winnerText = "It's a Tie!";
+        _winnerText = "It's a Tie!"; 
         _winnerAvatarPath = '';
         // 平局不播放音效
       }
 
-
+      // 延迟1秒后弹出结果面板
       Future.delayed(const Duration(seconds: 1), () { 
-
         if (mounted) {
           setState(() {
             _showResultPanel = true;
@@ -110,6 +113,7 @@ class _PKBattleScreenState extends State<PKBattleScreen>
     }
   }
 
+  // 关闭结果弹窗
   void _closeResultPanel() {
     if (mounted) {
       _panelAnimationController.reverse().then((_) {
@@ -122,6 +126,7 @@ class _PKBattleScreenState extends State<PKBattleScreen>
     }
   }
 
+  // 再来一局，重置界面
   void _onRematch() {
     _closeResultPanel();
     Future.delayed(
@@ -144,6 +149,7 @@ class _PKBattleScreenState extends State<PKBattleScreen>
     );
   }
 
+  // 查看数据回调（可自定义跳转）
   void _onViewStats() {
     _closeResultPanel();
     print("View Stats Tapped");
@@ -157,10 +163,11 @@ class _PKBattleScreenState extends State<PKBattleScreen>
     _allAttributeAnimationsDoneNotifier.dispose();
     _panelAnimationController.dispose();
     _progressBarWidthFactor.dispose();
-    _resultAudioPlayer.dispose(); // 新增
+    _resultAudioPlayer.dispose(); // 释放音效资源
     super.dispose();
   }
 
+  // 构建底部导航栏的单个按钮
   Widget _buildNavItem(
     BuildContext context,
     String iconPath,
@@ -239,6 +246,7 @@ class _PKBattleScreenState extends State<PKBattleScreen>
     );
   }
 
+  // 构建玩家头像和昵称
   Widget _buildPlayerColumn(
     BuildContext context,
     String avatarPath,
@@ -246,10 +254,10 @@ class _PKBattleScreenState extends State<PKBattleScreen>
     double avatarSize,
     double nameFontSize,
   ) {
-    return Column(
+    return Column(// 使用 Column 来垂直排列头像和昵称
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
+        Container(// 使用 Container 包裹头像，添加阴影效果
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             boxShadow: [
@@ -306,8 +314,9 @@ class _PKBattleScreenState extends State<PKBattleScreen>
             final double counterFontSize = maxWidth * 0.09;
             final double attributeContainerMargin = maxHeight * 0.025;
 
-            return Stack(
+            return Stack(// 使用 Stack 来叠加内容和结果面板
               children: [
+                // 主体内容：头像、VS、进度条、属性对比动画
                 SingleChildScrollView(
                   child: Padding(
                     padding: EdgeInsets.symmetric(
@@ -349,25 +358,27 @@ class _PKBattleScreenState extends State<PKBattleScreen>
                           ],
                         ),
                         SizedBox(height: maxHeight * 0.015),
+                        // PK进度条，显示当前胜率
                         PKProgressBar(
                           maxWidth: maxWidth,
                           progressBarWidthFactor: _progressBarWidthFactor,
                         ),
                         SizedBox(height: attributeContainerMargin),
+                        // 属性对比动画区域
                         FutureBuilder<Map<String, int>>(
-                          future: _fetchPkAttributes(),
+                          future: _fetchPkAttributes(), // 从 Firestore 获取当前用户的属性
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
                               return const Center(child: CircularProgressIndicator());
                             }
                             final pkAttributes = snapshot.data!;
-                            // 渲染 PKAttributeComparisonContainer
+                            // 这里将 pkAttributes 作为 leftAttributes 传递给 PKAttributeComparisonContainer
                             return PKAttributeComparisonContainer(
                               parentWidth: maxWidth,
                               onAllAnimationsComplete:
                                   _allAttributeAnimationsDoneNotifier,
                               progressBarWidthFactor: _progressBarWidthFactor,
-                              leftAttributes: pkAttributes,
+                              leftAttributes: pkAttributes, // ← 这里传入
                             );
                           },
                         ),
@@ -376,17 +387,18 @@ class _PKBattleScreenState extends State<PKBattleScreen>
                     ),
                   ),
                 ),
+                // PK结果面板弹窗，显示胜负结果
                 if (_showResultPanel)
                   Positioned.fill(
                     child: Container(
-                      color: Colors.black.withOpacity(0.4),
+                      color: Colors.black.withOpacity(0.4), // 半透明黑色背景，突出弹窗
                       child: PKResultPanel(
-                        winnerText: _winnerText,
-                        winnerAvatarPath: _winnerAvatarPath,
-                        maxWidth: maxWidth,
-                        onClose: _closeResultPanel,
-                        onRematch: _onRematch,
-                        onViewStats: _onViewStats,
+                        winnerText: _winnerText,           // 胜负文字
+                        winnerAvatarPath: _winnerAvatarPath, // 胜者头像路径
+                        maxWidth: maxWidth,                // 弹窗最大宽度
+                        onClose: _closeResultPanel,        // 关闭弹窗回调
+                        onRematch: _onRematch,             // 再来一局回调
+                        onViewStats: _onViewStats,         // 查看数据回调
                       ),
                     ),
                   ),
@@ -395,6 +407,7 @@ class _PKBattleScreenState extends State<PKBattleScreen>
           },
         ),
       ),
+      // 底部导航栏
       bottomNavigationBar: Container(
         height: 70,
         decoration: BoxDecoration(

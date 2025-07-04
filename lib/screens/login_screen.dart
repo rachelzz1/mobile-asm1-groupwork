@@ -138,22 +138,24 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(height: titleSpacing),
               Text(
+                // 欢迎提示语
                 'We are happy to see you here again. Enter your email address and password.',
                 style: TextStyle(fontSize: subtitleFontSize, color: lightTextColor),
               ),
               SizedBox(height: titleSpacing * 2.5),
+              // 邮箱输入框
               _buildTextField(
                 controller: _emailController,
                 hint: 'Email',
               ),
               SizedBox(height: inputSpacing),
+              // 密码输入框
               _buildTextField(
                 controller: _passwordController,
                 hint: 'Password',
                 isPassword: true,
               ),
-
-              
+              // 错误提示信息（如账号或密码错误）
               Visibility(
                 visible: _errorMessage != null,
                 maintainState: true,
@@ -167,10 +169,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              
-
               SizedBox(height: titleSpacing * 2.5),
-              
+              // 登录按钮
               SizedBox(
                 width: double.infinity,
                 height: buttonHeight,
@@ -181,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  onPressed: _isButtonEnabled ? _signIn : null,
+                  onPressed: _isButtonEnabled ? _signIn : null, // 点击登录，调用_signIn方法
                   child: Text(
                     'Log In',
                     style: TextStyle(
@@ -193,8 +193,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(height: titleSpacing * 1.5),
-              _buildDivider(),
+              _buildDivider(), // 分割线
               SizedBox(height: titleSpacing * 1.5),
+              // 跳转注册页面按钮
               SizedBox(
                 width: double.infinity,
                 height: buttonHeight,

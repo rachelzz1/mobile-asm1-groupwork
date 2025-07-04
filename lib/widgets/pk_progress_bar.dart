@@ -6,8 +6,8 @@ class PKProgressBar extends StatelessWidget {
   final double maxWidth;
   final ValueNotifier<double> progressBarWidthFactor;
 
-  static const Color leftBarColor = Color(0xFFFFBA3A);
-  static const Color rightBarColor = Color(0xFFE0E0E0);
+  static const Color leftBarColor = Color(0xFFFFBA3A);   // 左侧进度条颜色（橙色）
+  static const Color rightBarColor = Color(0xFFE0E0E0);  // 右侧进度条颜色（灰色）
 
   const PKProgressBar({
     Key? key,
@@ -17,7 +17,7 @@ class PKProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<double>(// Listen to changes in the progressBarWidthFactor
+    return ValueListenableBuilder<double>( // 监听进度条宽度变化
       valueListenable: progressBarWidthFactor,
       builder: (context, currentFactor, child) {
         final double progressBarContainerWidth = maxWidth * 0.8;
@@ -39,11 +39,11 @@ class PKProgressBar extends StatelessWidget {
             return SizedBox( 
               width: progressBarContainerWidth,
               height: fistBackgroundSize,
-              child: Stack(
+              child: Stack(// 使用 Stack 来叠加拳头和进度条
                 alignment: Alignment.center, 
                 clipBehavior: Clip.none, 
                 children: [
-                  // Progress bar visual
+                  // 灰色进度条背景
                   Container(
                     width: progressBarContainerWidth,
                     height: progressBarHeight,
@@ -52,7 +52,7 @@ class PKProgressBar extends StatelessWidget {
                       borderRadius: BorderRadius.circular(progressBarHeight / 2),
                     ),
                     clipBehavior: Clip.antiAlias, 
-                    child: FractionallySizedBox( //  orange part
+                    child: FractionallySizedBox( // 橙色进度条部分
                       alignment: Alignment.centerLeft,
                       widthFactor: animatedFactor,
                       child: Container(
@@ -64,24 +64,25 @@ class PKProgressBar extends StatelessWidget {
                     ),
                   ),
 
-                  // Fist and its background
-                  Positioned(
-                    left: fistCenterX - (fistBackgroundSize / 2),
-                    
+                  // 拳头及其背景图层
+                  Positioned(// 拳头位置
+                    left: fistCenterX - (fistBackgroundSize / 2),// 计算拳头的中心位置
                     child: SizedBox(
                       width: fistBackgroundSize,
                       height: fistBackgroundSize,
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
+                          // 拳头背景图片
                           Image.asset(
                             'assets/images/fist-background.png',
                             width: fistBackgroundSize,
                             height: fistBackgroundSize,
                             fit: BoxFit.contain,
                           ),
+                          // 拳头图片，顺时针旋转90度
                           Transform.rotate(
-                            angle: math.pi / 2, // 90 degrees clockwise
+                            angle: math.pi / 2, // 90度
                             child: Image.asset(
                               'assets/images/fist.png',
                               width: fistIconSize,

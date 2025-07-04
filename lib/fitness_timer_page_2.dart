@@ -11,6 +11,15 @@ import 'package:get_storage/get_storage.dart';
 import 'exercise_video.dart';
 
 class FitnessTimerPage2 extends StatefulWidget {
+  final String userId;     // 新增：接收用户ID
+  final String username;   // 新增：接收用户名
+
+  const FitnessTimerPage2({
+    Key? key,
+    required this.userId,
+    required this.username,
+  }) : super(key: key);
+
   @override
   _FitnessTimerPage2State createState() => _FitnessTimerPage2State();
 }
@@ -96,7 +105,12 @@ class _FitnessTimerPage2State extends State<FitnessTimerPage2> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ExerciseVideo()),
+              MaterialPageRoute(
+                builder: (context) => ExerciseVideo(
+                  userId: widget.userId,     // 传递userId
+                  username: widget.username, // 传递username
+                ),
+              ),
             );
           },
         ),
@@ -185,7 +199,9 @@ class _FitnessTimerPage2State extends State<FitnessTimerPage2> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => FitnessTimerPage1(),
+                        builder: (context) => FitnessTimerPage1(userId: widget.userId,     // 传递userId
+                          username: widget.username,
+                        ),
                       ),
                     );
                   },
@@ -220,14 +236,17 @@ class _FitnessTimerPage2State extends State<FitnessTimerPage2> {
                   onPressed:
                       _elapsedTime >= _totalDuration
                           ? () {
-                            _stopTimer();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => RewardScreen(),
-                              ),
-                            );
-                          }
+                              _stopTimer();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RewardScreen(
+                                    userId: widget.userId,     // 传递userId
+                                    username: widget.username, // 传递username
+                                  ),
+                                ),
+                              );
+                            }
                           : null,
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(

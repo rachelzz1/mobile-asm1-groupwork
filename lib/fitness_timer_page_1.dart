@@ -9,6 +9,15 @@ import 'fitness_timer_page_2.dart';
 
 //test-yyf
 class FitnessTimerPage1 extends StatefulWidget {
+  final String userId;     // 新增：接收用户ID
+  final String username;   // 新增：接收用户名
+
+  const FitnessTimerPage1({
+    Key? key,
+    required this.userId,
+    required this.username,
+  }) : super(key: key);
+
   @override
   _FitnessTimerPage1State createState() => _FitnessTimerPage1State();
 }
@@ -209,7 +218,10 @@ class _FitnessTimerPage1State extends State<FitnessTimerPage1> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => FitnessTimerPage2(),
+                        builder: (context) => FitnessTimerPage2(
+                          userId: widget.userId,     // 传递userId
+                          username: widget.username, // 传递username
+                        ),
                       ),
                     );
                   },

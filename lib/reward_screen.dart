@@ -4,6 +4,15 @@ import 'dart:async';
 import 'exercise_video.dart';
 
 class RewardScreen extends StatefulWidget {
+  final String userId;     // 接收用户ID
+  final String username;   // 接收用户名
+
+  const RewardScreen({
+    Key? key,
+    required this.userId,
+    required this.username,
+  }) : super(key: key);
+
   @override
   _RewardScreenState createState() => _RewardScreenState();
 }
@@ -106,7 +115,12 @@ class _RewardScreenState extends State<RewardScreen> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ExerciseVideo()),
+              MaterialPageRoute(
+                builder: (context) => ExerciseVideo(
+                  userId: widget.userId,      // 传递userId
+                  username: widget.username,  // 传递username
+                ),
+              ),
             );
           },
         ),

@@ -1,21 +1,22 @@
-// lib/widgets/pk_attribute_comparison.dart
+// PKAttributeComparisonContainer：PK属性对比动画组件，负责依次播放属性动画、更新进度条、播放音效，并在全部完成后回调
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:audioplayers/audioplayers.dart';
-import '../config/pk_attribute_data.dart'; // Import AttributeData
+import '../config/pk_attribute_data.dart'; // 导入属性数据结构
 
 class PKAttributeComparisonContainer extends StatefulWidget {
-  final double parentWidth;
-  final ValueNotifier<bool> onAllAnimationsComplete;
-  final ValueNotifier<double> progressBarWidthFactor;
-  final Map<String, int> leftAttributes; // 新增
+  final double parentWidth; // 父容器宽度，用于自适应布局
+  final ValueNotifier<bool> onAllAnimationsComplete; // 动画完成回调
+  final ValueNotifier<double> progressBarWidthFactor; // 进度条宽度（胜率）
+  final Map<String, int> leftAttributes; // 当前用户的属性数据
 
   const PKAttributeComparisonContainer({
     Key? key,
     required this.parentWidth,
     required this.onAllAnimationsComplete,
     required this.progressBarWidthFactor,
-    required this.leftAttributes, // 新增
+    required this.leftAttributes,
   }) : super(key: key);
 
   @override
@@ -26,33 +27,26 @@ class PKAttributeComparisonContainer extends StatefulWidget {
 class _PKAttributeComparisonContainerState
     extends State<PKAttributeComparisonContainer>
     with TickerProviderStateMixin {
-  late final List<AttributeData> _attributes;
+  late final List<AttributeData> _attributes; // 属性数据列表
 
-  // Index to track the current attribute being animated
-  int _currentAttributeIndex = 0;
+  int _currentAttributeIndex = 0; // 当前正在播放动画的属性索引
 
-  // List of animation controllers
-  List<AnimationController> _controllers = [];
+  List<AnimationController> _controllers = []; // 动画控制器列表
+  List<Animation<int>> _leftValueAnimations = []; // 左侧属性动画
+  List<Animation<int>> _rightValueAnimations = []; // 右侧属性动画
+  List<bool> _animationCompleted = []; // 每个属性动画是否完成
 
-  // List of animations for left and right values
-  List<Animation<int>> _leftValueAnimations = [];
-  List<Animation<int>> _rightValueAnimations = [];
+  int _totalLeftValue = 0; // 左侧总分
+  int _totalRightValue = 0; // 右侧总分
 
-  // List to track if the animation for each attribute is completed
-  List<bool> _animationCompleted = [];
-
-  // List to track the total left and right values for the progress bar
-  int _totalLeftValue = 0;
-  int _totalRightValue = 0;
-
-  final AudioPlayer _audioPlayer = AudioPlayer();
+  final AudioPlayer _audioPlayer = AudioPlayer(); // 属性对比音效播放器
 
   @override
   void initState() {
     super.initState();
     widget.onAllAnimationsComplete.value = false;
 
-    // 用传入的 leftAttributes 构造属性
+    // 用传入的 leftAttributes 构造属性数据
     _attributes = [
       AttributeData(
         iconPath: 'assets/icons/Endurance.svg',
@@ -78,6 +72,7 @@ class _PKAttributeComparisonContainerState
         leftValue: widget.leftAttributes['flexibility'] ?? 0,
         rightValue: 45,
       ),
+      // 总分项
       AttributeData(
         iconPath: '',
         name: "Total",
@@ -89,6 +84,7 @@ class _PKAttributeComparisonContainerState
       ),
     ];
 
+    // 初始化动画控制器和动画
     _controllers.forEach((controller) => controller.dispose());
     _controllers = [];
     _leftValueAnimations = [];
@@ -96,24 +92,23 @@ class _PKAttributeComparisonContainerState
     _animationCompleted = [];
     _currentAttributeIndex = 0;
 
-    for (var attribute in _attributes) {// Initialize the animation controllers and animations
+    for (var attribute in _attributes) {
       final controller = AnimationController(
         duration: const Duration(milliseconds: 800),
         vsync: this,
       );
       _controllers.add(controller);
 
-      // Create animations for left and right values
+      // 左右属性值动画
       _leftValueAnimations.add(
         IntTween(begin: 0, end: attribute.leftValue).animate(controller),
       );
-
       _rightValueAnimations.add(
         IntTween(begin: 0, end: attribute.rightValue).animate(controller),
       );
       _animationCompleted.add(false);
     }
-    _startNextAnimation();
+    _startNextAnimation(); // 开始第一个属性动画
   }
 
   @override
@@ -125,6 +120,7 @@ class _PKAttributeComparisonContainerState
     super.dispose();
   }
 
+  // 依次播放每个属性动画，动画完成后更新进度条和播放音效，全部完成后回调
   void _startNextAnimation() async {
     if (_currentAttributeIndex < _attributes.length) {
       _controllers[_currentAttributeIndex].forward().then((_) async {
@@ -134,6 +130,7 @@ class _PKAttributeComparisonContainerState
             _totalLeftValue += _attributes[_currentAttributeIndex].leftValue;
             _totalRightValue += _attributes[_currentAttributeIndex].rightValue;
 
+            // 动态更新进度条宽度（胜率）
             if (_totalLeftValue + _totalRightValue > 0) {
               widget.progressBarWidthFactor.value =
                   _totalLeftValue / (_totalLeftValue + _totalRightValue);
@@ -153,9 +150,11 @@ class _PKAttributeComparisonContainerState
             }
           }
 
+          // 全部属性动画完成，触发回调
           if (_currentAttributeIndex == _attributes.length - 1) {
             widget.onAllAnimationsComplete.value = true;
           } else {
+            // 延迟后播放下一个属性动画
             Future.delayed(const Duration(milliseconds: 400), () {
               if (mounted) {
                 setState(() {
@@ -178,6 +177,7 @@ class _PKAttributeComparisonContainerState
 
     return Column(
       children: [
+        // 依次渲染已播放动画的属性行
         for (
           int i = 0;
           i <= _currentAttributeIndex && i < _attributes.length;
@@ -187,7 +187,7 @@ class _PKAttributeComparisonContainerState
             padding: EdgeInsets.only(
               bottom: i < _currentAttributeIndex ? spacing : 0,
             ),
-            child: AnimatedBuilder(// Use AnimatedBuilder to animate the attributes
+            child: AnimatedBuilder(
               animation: _controllers[i],
               builder: (context, child) {
                 final attribute = _attributes[i];
@@ -215,29 +215,28 @@ class _PKAttributeComparisonContainerState
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
-                        border:
-                            currentUserWinsAttribute
-                                ? Border.all(color: Colors.orange, width: 3)// Orange border for the winning attribute
-                                : null,
-                        boxShadow:
-                            currentUserWinsAttribute
-                                ? [
-                                  BoxShadow(
-                                    color: Colors.orange.withOpacity(0.2),// Shadow for the winning attribute
-                                    offset: const Offset(2, 2),
-                                    blurRadius: 8,
-                                  ),
-                                ]
-                                : [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.08),// Shadow for the losing attribute
-                                    offset: const Offset(2, 2),
-                                    blurRadius: 8,
-                                  ),
-                                ],
+                        border: currentUserWinsAttribute
+                            ? Border.all(color: Colors.orange, width: 3) // 胜出属性高亮橙色边框
+                            : null,
+                        boxShadow: currentUserWinsAttribute
+                            ? [
+                                BoxShadow(
+                                  color: Colors.orange.withOpacity(0.2), // 胜出属性橙色阴影
+                                  offset: const Offset(2, 2),
+                                  blurRadius: 8,
+                                ),
+                              ]
+                            : [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.08), // 失败属性灰色阴影
+                                  offset: const Offset(2, 2),
+                                  blurRadius: 8,
+                                ),
+                              ],
                       ),
                       child: Row(
                         children: [
+                          // 左侧分数
                           Expanded(
                             flex: 1,
                             child: Text(
@@ -250,6 +249,7 @@ class _PKAttributeComparisonContainerState
                               textAlign: TextAlign.center,
                             ),
                           ),
+                          // 属性名和图标
                           Expanded(
                             flex: 3,
                             child: Row(
@@ -278,6 +278,7 @@ class _PKAttributeComparisonContainerState
                               ],
                             ),
                           ),
+                          // 右侧分数
                           Expanded(
                             flex: 1,
                             child: Text(

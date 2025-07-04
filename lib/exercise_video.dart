@@ -4,10 +4,19 @@ import 'package:video/videoplayerwidget.dart';
 import 'package:video/fitness_timer_page_1.dart';
 import 'screens/home_page.dart';
 import 'package:get_storage/get_storage.dart';
+import '/screens/home_page.dart';
 
 class ExerciseVideo extends StatefulWidget {
   //final String workoutId;
-  const ExerciseVideo({super.key});
+  final String userId;     // 接收用户ID
+  final String username;   // 接收用户名
+
+  const ExerciseVideo({
+    Key? key,
+    required this.userId,
+    required this.username,
+  }) : super(key: key);
+  
   @override
   ExerciseVideoState createState() => ExerciseVideoState();
 }
@@ -35,7 +44,8 @@ class ExerciseVideoState extends State<ExerciseVideo> {
     }
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => FitnessTimerPage1()),
+      MaterialPageRoute(builder: (context) => FitnessTimerPage1(userId: widget.userId,     // 传递userId
+                          username: widget.username,)),
     );
   }
 
@@ -62,8 +72,17 @@ class ExerciseVideoState extends State<ExerciseVideo> {
                         //Back button
                         InkWell(
                           onTap: () {
-                            Navigator.pop(context);
-                          },
+  Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(
+      builder: (context) => FitnessHomePage(
+        userId: widget.userId, // 使用传入的userId
+        username: widget.username, // 使用传入的username
+      ),
+    ),
+    (route) => false, // 清空页面栈，直接返回首页
+  );
+},
                           child: Container(
                             margin: const EdgeInsets.only(
                               top: 17,

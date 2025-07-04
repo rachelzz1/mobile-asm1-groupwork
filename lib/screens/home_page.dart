@@ -380,6 +380,8 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
                         backgroundColor: Colors.orange.shade300,
                         characterImageHeight: 85,
                         workoutIdentifier: "boom_burpee_burn",
+                        userId: widget.userId,
+                        username: widget.username,
                       ),
                       WorkoutCard(
                         title: "Sour and\nRefreshing\nSlim Belly",
@@ -390,6 +392,8 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
                         backgroundColor: Colors.lightBlue.shade200,
                         characterImageHeight: 95,
                         workoutIdentifier: "slim_belly_yoga",
+                        userId: widget.userId,
+                        username: widget.username,
                       ),
                       WorkoutCard(
                         title: "Groovy\nDance Fit",
@@ -400,6 +404,8 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
                         backgroundColor: Colors.yellow.shade600,
                         characterImageHeight: 85,
                         workoutIdentifier: "groovy_dance_fit",
+                        userId: widget.userId,
+                        username: widget.username,
                       ),
                       WorkoutCard(
                         title: "Plank\nWorkout",
@@ -410,6 +416,8 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
                         backgroundColor: Colors.deepOrange.shade400,
                         characterImageHeight: 83,
                         workoutIdentifier: "plank_challenge",
+                        userId: widget.userId,
+                        username: widget.username,
                       ),
                     ],
                   ),
