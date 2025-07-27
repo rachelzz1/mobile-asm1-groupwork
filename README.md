@@ -48,34 +48,34 @@ lib/
 ##  Screenshots
 
 <p align="center">
-  <img src="assets\images\screenshots\1.png" width="30%" />
-  <img src="assets\images\screenshots\2.png" width="30%" />
+  <img src="assets\images\screenshots\1.png" width="27%" />
+  <img src="assets\images\screenshots\2.png" width="27%" />
 </p>
 <p align="center">
-  <img src="assets\images\screenshots\2.1.png" width="30%" />
-  <img src="assets\images\screenshots\3.png" width="30%" />
-</p>
-
-<p align="center">
-  <img src="assets\images\screenshots\4.png" width="30%" />
-  <img src="assets\images\screenshots\5.png" width="30%" />
+  <img src="assets\images\screenshots\2.1.png" width="27%" />
+  <img src="assets\images\screenshots\3.png" width="27%" />
 </p>
 
 <p align="center">
-  <img src="assets\images\screenshots\6.png" width="30%" />
-  <img src="assets\images\screenshots\7.png" width="30%" />
-</p>
-<p align="center">
-  <img src="assets\images\screenshots\8.png" width="30%" />
-  <img src="assets\images\screenshots\9.png" width="30%" />
+  <img src="assets\images\screenshots\4.png" width="27%" />
+  <img src="assets\images\screenshots\5.png" width="27%" />
 </p>
 
 <p align="center">
-  <img src="assets\images\screenshots\10.png" width="30%" />
-  <img src="assets\images\screenshots\11.png" width="30%" />
+  <img src="assets\images\screenshots\6.png" width="27%" />
+  <img src="assets\images\screenshots\7.png" width="27%" />
 </p>
 <p align="center">
-  <img src="assets\images\screenshots\12.png" width="30%" />
+  <img src="assets\images\screenshots\8.png" width="27%" />
+  <img src="assets\images\screenshots\9.png" width="27%" />
+</p>
+
+<p align="center">
+  <img src="assets\images\screenshots\10.png" width="27%" />
+  <img src="assets\images\screenshots\11.png" width="27%" />
+</p>
+<p align="center">
+  <img src="assets\images\screenshots\12.png" width="27%" />
 
 </p>
 
