@@ -28,20 +28,22 @@ LazyFit is a mobile fitness app designed for people who struggle with motivation
 
 ## Folder Structure
 
+```
 lib/
 │
 ├── screens/
-│   ├── login_signup/
-│   ├── pk_battle/
-│   ├── calendar/
-│   ├── profile/
-│   ├── settings/
-│   └── support/
+│   ├── login_signup/
+│   ├── pk_battle/
+│   ├── calendar/
+│   ├── profile/
+│   ├── settings/
+│   └── support/
 │
 ├── models/
 ├── services/
 ├── widgets/
 └── main.dart
+```
 
 ##  Screenshots
 
